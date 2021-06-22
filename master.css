@@ -1,0 +1,74 @@
+body {
+  background-color: #131313;
+  color: #269126;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+#topNavBar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 5vh;
+  background-color: #262626;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 91;
+}
+#navBarLogo {
+  display: inherit;
+  width: 10%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-image: url("imgs/icon.png");
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+  background-position: center;
+}
+#navBarLogo:hover {
+  background-color: #000000;
+}
+.navBarButton {
+  display: inherit;
+  width: 30%;
+  height: 100%;
+  background-color: #131326;
+  color: #139113;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.navBarButton:hover {
+  background-color: #262652;
+}
+
+
+#splashContainer {
+  display: flex;
+  width: 100vw;
+  height: 95vh;
+  position: relative;
+  top: 5vh;
+  justify-content: center;
+  align-items: center;
+}
+
+#sectionOne {
+  text-align: justify;
+
+}
+h1{
+  text-align: center;
+}
+
+.p5canvas {
+  z-index: -1;
+}
