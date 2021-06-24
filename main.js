@@ -452,20 +452,20 @@ function preload() {
   img_S_m1 = loadImage("imgs/S/7 SESION_10A6403-1.jpg");
   img_S_m2 = loadImage("imgs/S/7 SESION_10A5956-1 copia.jpg");
   // Southeastern trig imgs
-  img_SE_Big = loadImage("imgs/SE/_10A6025.jpg");
-  img_SE_00 = loadImage("imgs/SE/novena sesion 2 parte_10A6897-1 copia.jpg");
-  img_SE_01 = loadImage("imgs/SE/SESION 2_10A6067-1 copia.jpg");
-  img_SE_02 = loadImage("imgs/SE/_10A6017.jpg");
-  img_SE_10 = loadImage("imgs/SE/PENELOPE_R_ copia.jpg");
-  img_SE_11 = loadImage("imgs/SE/PENELOPE_P_ copia.jpg");
-  img_SE_m0 = loadImage("imgs/SE/novena sesion 2 parte_10A6896-1 copia.jpg");
+  img_SE_Big = loadImage("imgs/SE/novena sesion 2 parte_10A6905-1 copia 2.jpg");
+  img_SE_00 = loadImage("imgs/SE/novena sesion 2 parte_10A6898-1.jpg");
+  img_SE_01 = loadImage("imgs/SE/SESION__9_10A6885-1 copia.jpg");
+  img_SE_02 = loadImage("imgs/SE/SESION_9_10A6895-1 copia.jpg");
+  img_SE_10 = loadImage("imgs/SE/SESION_9_10A6877-1.jpg");
+  img_SE_11 = loadImage("imgs/SE/novena sesion 2 parte_10A6910-1 copia.jpg");
   // Southwestern trig imgs
-  img_SW_Big = loadImage("imgs/SW/");
-  img_SW_00 = loadImage("imgs/SW/");
-  img_SW_01 = loadImage("imgs/SW/");
-  img_SW_02 = loadImage("imgs/SW/");
-  img_SW_10 = loadImage("imgs/SW/");
-  img_SW_11 = loadImage("imgs/SW/");
+  img_SW_Big = loadImage("imgs/SW/_10A6025.jpg");
+  img_SW_00 = loadImage("imgs/SW/novena sesion 2 parte_10A6897-1 copia.jpg");
+  img_SW_01 = loadImage("imgs/SW/SESION 2_10A6067-1 copia.jpg");
+  img_SW_02 = loadImage("imgs/SW/_10A6017.jpg");
+  img_SW_10 = loadImage("imgs/SW/PENELOPE_R_ copia.jpg");
+  img_SW_11 = loadImage("imgs/SW/PENELOPE_P_ copia.jpg");
+  img_SW_m0 = loadImage("imgs/SW/novena sesion 2 parte_10A6896-1 copia.jpg");
   // Western trig buttload of imgs :')
   img_W_Big = loadImage("imgs/W/00_A y E_ copia-1.jpg");
   img_W_00 = loadImage("imgs/W/PENELOPE_M_ copia.jpg");
