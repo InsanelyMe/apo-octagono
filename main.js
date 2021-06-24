@@ -213,35 +213,64 @@ class OctagonPiece {
     let smallImgShortSide = octaSide * 0.125;
     let bigImgLongSide = octaSide * 0.3;
     let bigImgShortSide = octaSide * 0.25;
+    let anchorX = 0;
+    let anchorY = 0;
     switch (this.heading) {
       case "N":
-        image(img_N_Big, this.AX-(bigImgLongSide*0.5), this.AY-(octaRadius+bigImgShortSide*0.3))
-        image(im_N_00, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_11, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_12, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_13, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_14, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_21, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_31, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_41, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_m1, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
-        image(im_N_m2, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        // Big image centered and anchored to the edge
+        image(img_N_Big, this.AX-(bigImgLongSide*0.5), this.AY-(octaRadius+bigImgShortSide*0.3), bigImgLongSide, bigImgShortSide);
+        // centered image closest to the octagon's center. anchored only to Y axis
+        image(im_N_00, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgLongSide);
+        image(im_N_11, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.4), smallImgShortSide, smallImgLongSide);
+        // set anchors to right side (at least I hope it is the right side...)
+        anchorX = (this.AX+this.CX)/2;
+        anchorY = (this.AY+this.CY)/2;
+        image(im_N_12, anchorX+(smallImgShortSide), anchorY-(smallImgLongSide), smallImgLongSide, smallImgShortSide);
+        image(im_N_13, anchorX+(smallImgShortSide*1.3), anchorY-(smallImgLongSide*1.3), smallImgLongSide, smallImgShortSide);
+        image(im_N_14, anchorX+(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.8), smallImgLongSide, smallImgShortSide);
+        // set anchors to left side, i hope
+        anchorX = (this.AX+this.BX)/2;
+        anchorY = (this.AY+this.BY)/2;
+        image(im_N_21, anchorX-(smallImgShortSide), anchorY-(smallImgLongSide), smallImgLongSide, smallImgShortSide);
+        image(im_N_31, anchorX-(smallImgShortSide*1.3), anchorY-(smallImgLongSide*1.3), smallImgLongSide, smallImgShortSide);
+        image(im_N_41, anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.8), smallImgLongSide, smallImgShortSide);
+        // more centered images anchored to y axis
+        image(im_N_m1, this.AX-(smallImgShortSide/2), this.AY-(smallImgShortSide*3.5), smallImgLongSide, smallImgShortSide);
+        image(im_N_m2, this.AX-(smallImgShortSide/2), this.AY-(smallImgShortSide*2), smallImgLongSide, smallImgShortSide);
         break;
       case "E":
         image(img_E_Big, this.AX+(octaRadius+(octaSide*0.3)), this.AY-(octaSide*0.16), octaSide*0.25, octaSide*0.3);
         image(img_E_00, this.AX+(octaRadius*0.2), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_E_01, ((this.AX+this.CX)*0.5)-(smallImgShortSide*1.8), ((this.AY+this.CY)*0.5)-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
-        image(img_E_02, ((this.AX+this.CX)*0.5)-(smallImgShortSide*0.5), ((this.AY+this.CY)*0.5)-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_E_03, ((this.AX+this.CX)*0.5)+(smallImgShortSide*1.2), ((this.AY+this.CY)*0.5)-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
-        image(img_E_04, ((this.AX+this.CX)*0.5)+(smallImgShortSide*3.2), ((this.AY+this.CY)*0.5)-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
-        image(img_E_10, ((this.AX+this.BX)*0.5)-(smallImgShortSide*1.8), ((this.AY+this.BY)*0.5)+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
-        image(img_E_11, ((this.AX+this.BX)*0.5)-(smallImgShortSide*0.5), ((this.AY+this.BY)*0.5)+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
-        image(img_E_12, ((this.AX+this.BX)*0.5)+(smallImgShortSide*1.2), ((this.AY+this.BY)*0.5)-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
-        image(img_E_13, ((this.AX+this.BX)*0.5)+(smallImgShortSide*3.2), ((this.AY+this.BY)*0.5)-(smallImgLongSide*1), smallImgShortSide+8, smallImgLongSide+8);
+        anchorX = (this.AX+this.CX)/2;
+        anchorY = (this.AY+this.CY)/2;
+        image(img_E_01, anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
+        image(img_E_02, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        image(img_E_03, anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
+        image(img_E_04, anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
+        anchorX = (this.AX+this.BX)/2;
+        anchorY = (this.AY+this.BY)/2;
+        image(img_E_10, anchorX-(smallImgShortSide*1.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
+        image(img_E_11, anchorX-(smallImgShortSide*0.5), anchorY+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
+        image(img_E_12, anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
+        image(img_E_13, anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide),     smallImgShortSide+8, smallImgLongSide+8);
         image(img_E_m1, this.AX+(octaRadius-(smallImgShortSide*3.5)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         image(img_E_m2, this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         break;
       case "S":
+        iamge(img_S_Big, this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.1), bigImgLongSide, bigImgShortSide);
+        iamge(img_S_00, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
+        iamge(img_S_11, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
+        anchorX = (this.AX+this.CX)/2;
+        anchorY = (this.AY+this.CY)/2;
+        iamge(img_S_01, anchorX-(smallImgShortSide),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        iamge(img_S_02, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        anchorX = (this.AX+this.BX)/2;
+        anchorY = (this.AY+this.BY)/2;
+        iamge(img_S_12, anchorX+(smallImgShortSide*0.2),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        iamge(img_S_13, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        // anchored to the middle... (y axis)
+        iamge(img_S_m1, this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*3.0), smallImgShortSide, smallImgLongSide);
+        iamge(img_S_m2, this.AX-(smallImgShortSide/2),  this.AY+(smallImgShortSide*2.6), smallImgLongSide, smallImgShortSide);
         break;
       case "W":
         break;
