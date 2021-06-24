@@ -256,11 +256,11 @@ class OctagonPiece {
       default:
         console.log("broken image rendering in 'drawBoundImgs'");
     }
-    if (this.growing) {
-      this.boundIMGs.forEach((img) => {
-        img.resize(img.width*2, img.height*2);
-      });
-    }
+    // if (this.growing) {
+      // this.boundIMGs.forEach((img) => {
+        // img.resize(img.width*2, img.height*2);
+      // });
+    // }
   }
 }
 
