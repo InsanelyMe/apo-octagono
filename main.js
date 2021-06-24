@@ -319,30 +319,76 @@ class Octagon {
           break;
         case "S":
           trig.boundIMGs.push(img_S_Big);
-
+          trig.boundIMGs.push(img_S_00);
+          trig.boundIMGs.push(img_S_11);
+          trig.boundIMGs.push(img_S_01);
+          trig.boundIMGs.push(img_S_02);
+          trig.boundIMGs.push(img_S_12);
+          trig.boundIMGs.push(img_S_13);
+          trig.boundIMGs.push(img_S_m1);
+          trig.boundIMGs.push(img_S_m2);
           break;
         case "W":
-        trig.boundIMGs.push(img_W_Big);
-
+          trig.boundIMGs.push(img_W_Big);
+          trig.boundIMGs.push(img_W_00);
+          trig.boundIMGs.push(img_W_11);
+          trig.boundIMGs.push(img_W_22);
+          trig.boundIMGs.push(img_W_t0);
+          trig.boundIMGs.push(img_W_t1);
+          trig.boundIMGs.push(img_W_t2);
+          trig.boundIMGs.push(img_W_b0);
+          trig.boundIMGs.push(img_W_b1);
+          trig.boundIMGs.push(img_W_b2);
+          trig.boundIMGs.push(img_W_m0);
+          trig.boundIMGs.push(img_W_m1);
+          trig.boundIMGs.push(img_W_mt);
+          trig.boundIMGs.push(img_W_mb);
           break;
         case "NE":
-        trig.boundIMGs.push(img_NE_Big);
-
+          trig.boundIMGs.push(img_NE_Big);
+          tring.boundIMGs.push(img_NE_Big);
+          tring.boundIMGs.push(img_NE_00);
+          tring.boundIMGs.push(img_NE_01);
+          tring.boundIMGs.push(img_NE_02);
+          tring.boundIMGs.push(img_NE_03);
+          tring.boundIMGs.push(img_NE_04);
+          tring.boundIMGs.push(img_NE_10);
+          tring.boundIMGs.push(img_NE_11);
+          tring.boundIMGs.push(img_NE_12);
+          tring.boundIMGs.push(img_NE_m0);
+          tring.boundIMGs.push(img_NE_m01);
+          tring.boundIMGs.push(img_NE_m10);
           break;
         case "NW":
-        trig.boundIMGs.push(img_NW_Big);
-
+          trig.boundIMGs.push(img_NW_Big);
+          trig.boundIMGs.push(img_NW_00);
+          trig.boundIMGs.push(img_NW_01);
+          trig.boundIMGs.push(img_NW_02);
+          trig.boundIMGs.push(img_NW_03);
+          trig.boundIMGs.push(img_NW_10);
+          trig.boundIMGs.push(img_NW_20);
+          trig.boundIMGs.push(img_NW_m1);
+          trig.boundIMGs.push(img_NW_m2);
           break;
         case "SE":
-        trig.boundIMGs.push(img_SE_Big);
-
+          trig.boundIMGs.push(img_SE_Big);
+          trig.boundIMGs.push(img_SE_00);
+          trig.boundIMGs.push(img_SE_01);
+          trig.boundIMGs.push(img_SE_02);
+          trig.boundIMGs.push(img_SE_10);
+          trig.boundIMGs.push(img_SE_11);
           break;
         case "SW":
-        trig.boundIMGs.push(img_SW_Big);
-
+          trig.boundIMGs.push(img_SW_Big);
+          trig.boundIMGs.push(img_SW_00);
+          trig.boundIMGs.push(img_SW_01);
+          trig.boundIMGs.push(img_SW_02);
+          trig.boundIMGs.push(img_SW_10);
+          trig.boundIMGs.push(img_SW_11);
+          trig.boundIMGs.push(img_SW_m0);
           break;
         default:
-
+          console.log("tried to link images to a triangle that doesn't exist :')'");
       }
     });
 
@@ -388,8 +434,14 @@ class Octagon {
 // because all of this is client-side, we can't load everything in a pretty and efficient loop, oh no....
 // ugly ass column of stupid variables required :(
 // why? you ask... well damned images must follow damned order as per requirements. 'art'
-// images that'll go in East triangle:
 var img_E_Big,img_E_00,img_E_01,img_E_02,img_E_03,img_E_04,img_E_10,img_E_11,img_E_12,img_E_13,img_E_m1,img_E_m2;
+var img_N_Big,im_N_00,im_N_11,im_N_12,im_N_13,im_N_14,im_N_21,im_N_31,im_N_41,im_N_m1,im_N_m2;
+var img_NE_Big,img_NE_00,img_NE_01,img_NE_02,img_NE_03,img_NE_04,img_NE_10,img_NE_11,img_NE_12,img_NE_m0,img_NE_m01,img_NE_m10;
+var img_NW_Big,img_NW_00,img_NW_01,img_NW_02,img_NW_03,img_NW_10,img_NW_20,img_NW_m1,img_NW_m2;
+var img_S_Big,img_S_00,img_S_11,img_S_01,img_S_02,img_S_12,img_S_13,img_S_m1,img_S_m2;
+var img_SE_Big,img_SE_00,img_SE_01,img_SE_02,img_SE_10,img_SE_11;
+var img_SW_Big,img_SW_00,img_SW_01,img_SW_02,img_SW_10,img_SW_11,img_SW_m0;
+var img_W_Big,img_W_00,img_W_11,img_W_22,img_W_t0,img_W_t1,img_W_t2,img_W_b0,img_W_b1,img_W_b2,img_W_m0,img_W_m1,img_W_mt,img_W_mb;
 
 function preload() {
   // loading our damned images... blame the artist for the amazing significant file-names ¬¬
@@ -408,16 +460,16 @@ function preload() {
   img_E_m2 = loadImage("imgs/E/SESION 4_10A6234-1.jpg");
   // Northern trig imgs
   img_N_Big = loadImage("imgs/N/SESION 6 CON FLASH_10A6829-1 copia.jpg");
-  im_N_00 = loadImage("imgs/N/BACK STAGE SESION 6 CON FLASH_10A6840-1 copia.jpg");
-  im_N_11 = loadImage("imgs/N/SESION 6 CON FLASH_10A6824-1 copia.jpg");
-  im_N_12 = loadImage("imgs/N/SESION 6 CON FLASH_10A6831-1 copia.jpg");
-  im_N_13 = loadImage("imgs/N/SESION 6 CON FLASH_10A6830-1 copia.jpg");
-  im_N_14 = loadImage("imgs/N/SESION 6 CON FLASH_10A6839-1 copia.jpg");
-  im_N_21 = loadImage("imgs/N/SESION 6 CON FLASH_10A6841-1 copia.jpg");
-  im_N_31 = loadImage("imgs/N/SESION 6 CON FLASH_10A6825-1 copia.jpg");
-  im_N_41 = loadImage("imgs/N/SESION 6 CON FLASH_10A6836-1 copia.jpg");
-  im_N_m1 = loadImage("imgs/N/SESION 6 CON FLASH_10A6832-1 copia.jpg");
-  im_N_m2 = loadImage("imgs/N/SESION 6 CON FLASH_10A6838-1 copia.jpg");
+  im_N_00   = loadImage("imgs/N/BACK STAGE SESION 6 CON FLASH_10A6840-1 copia.jpg");
+  im_N_11   = loadImage("imgs/N/SESION 6 CON FLASH_10A6824-1 copia.jpg");
+  im_N_12   = loadImage("imgs/N/SESION 6 CON FLASH_10A6831-1 copia.jpg");
+  im_N_13   = loadImage("imgs/N/SESION 6 CON FLASH_10A6830-1 copia.jpg");
+  im_N_14   = loadImage("imgs/N/SESION 6 CON FLASH_10A6839-1 copia.jpg");
+  im_N_21   = loadImage("imgs/N/SESION 6 CON FLASH_10A6841-1 copia.jpg");
+  im_N_31   = loadImage("imgs/N/SESION 6 CON FLASH_10A6825-1 copia.jpg");
+  im_N_41   = loadImage("imgs/N/SESION 6 CON FLASH_10A6836-1 copia.jpg");
+  im_N_m1   = loadImage("imgs/N/SESION 6 CON FLASH_10A6832-1 copia.jpg");
+  im_N_m2   = loadImage("imgs/N/SESION 6 CON FLASH_10A6838-1 copia.jpg");
   // Northeastern Trig imgs
   img_NE_Big = loadImage("imgs/NE/FAHR_03.jpg");
   img_NE_00 = loadImage("imgs/NE/FAHR_10.jpg");
