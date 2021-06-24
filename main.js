@@ -32,7 +32,9 @@ class OctagonPiece {
     this.maxGrowth = 69;
 
     // images contained by this triangle
-    this.boundIMGs = []
+    this.boundIMGs = [];
+    // should imgs be big?
+    this.bigImgs = false;
   }
 
 
@@ -207,12 +209,37 @@ class OctagonPiece {
 
   drawBoundImgs(){
     // we have to draw each image in a specific point in each triangle:
+    let smallImgLongSide = octaSide * 0.16;
+    let smallImgShortSide = octaSide * 0.125;
+    let bigImgLongSide = octaSide * 0.3;
+    let bigImgShortSide = octaSide * 0.25;
     switch (this.heading) {
       case "N":
+        image(img_N_Big, this.AX-(bigImgLongSide*0.5), this.AY-(octaRadius+bigImgShortSide*0.3))
+        image(im_N_00, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_11, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_12, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_13, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_14, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_21, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_31, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_41, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_m1, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
+        image(im_N_m2, this.AX, this.AY, smallImgLongSide, smallImgShortSide);
         break;
       case "E":
-        image(img_E_Big, testOctagon.trig_E.CX, testOctagon.trig_E.AY-(octaSide/6), octaSide/4, octaSide/3);
-        image(img_E_00, testOctagon.trig_E.AX+(octaSide/3), testOctagon.trig_E.AY-(octaSide/16), octaSide/7.5, octaSide/8);
+        image(img_E_Big, this.AX+(octaRadius+(octaSide*0.3)), this.AY-(octaSide*0.16), octaSide*0.25, octaSide*0.3);
+        image(img_E_00, this.AX+(octaRadius*0.2), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_E_01, ((this.AX+this.CX)*0.5)-(smallImgShortSide*1.8), ((this.AY+this.CY)*0.5)-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
+        image(img_E_02, ((this.AX+this.CX)*0.5)-(smallImgShortSide*0.5), ((this.AY+this.CY)*0.5)-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        image(img_E_03, ((this.AX+this.CX)*0.5)+(smallImgShortSide*1.2), ((this.AY+this.CY)*0.5)-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
+        image(img_E_04, ((this.AX+this.CX)*0.5)+(smallImgShortSide*3.2), ((this.AY+this.CY)*0.5)-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
+        image(img_E_10, ((this.AX+this.BX)*0.5)-(smallImgShortSide*1.8), ((this.AY+this.BY)*0.5)+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
+        image(img_E_11, ((this.AX+this.BX)*0.5)-(smallImgShortSide*0.5), ((this.AY+this.BY)*0.5)+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
+        image(img_E_12, ((this.AX+this.BX)*0.5)+(smallImgShortSide*1.2), ((this.AY+this.BY)*0.5)-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
+        image(img_E_13, ((this.AX+this.BX)*0.5)+(smallImgShortSide*3.2), ((this.AY+this.BY)*0.5)-(smallImgLongSide*1), smallImgShortSide+8, smallImgLongSide+8);
+        image(img_E_m1, this.AX+(octaRadius-(smallImgShortSide*3.5)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_E_m2, this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         break;
       case "S":
         break;
@@ -228,7 +255,11 @@ class OctagonPiece {
         break;
       default:
         console.log("broken image rendering in 'drawBoundImgs'");
-
+    }
+    if (this.growing) {
+      this.boundIMGs.forEach((img) => {
+        img.resize(img.width*2, img.height*2);
+      });
     }
   }
 }
@@ -254,6 +285,67 @@ class Octagon {
     this.trig_SW = undefined;
 
     this.trigs = this.makeOctagon(cX, cY, rad, a/2);
+  }
+
+  linkBoundImgs(){
+    this.trigs.forEach((trig) => {
+      switch (trig.heading) {
+        case "N":
+          trig.boundIMGs.push(img_N_Big);
+          trig.boundIMGs.push(im_N_00);
+          trig.boundIMGs.push(im_N_11);
+          trig.boundIMGs.push(im_N_12);
+          trig.boundIMGs.push(im_N_13);
+          trig.boundIMGs.push(im_N_14);
+          trig.boundIMGs.push(im_N_21);
+          trig.boundIMGs.push(im_N_31);
+          trig.boundIMGs.push(im_N_41);
+          trig.boundIMGs.push(im_N_m1);
+          trig.boundIMGs.push(im_N_m2);
+          break;
+        case "E":
+          trig.boundIMGs.push(img_E_Big);
+          trig.boundIMGs.push(img_E_00);
+          trig.boundIMGs.push(img_E_01);
+          trig.boundIMGs.push(img_E_02);
+          trig.boundIMGs.push(img_E_03);
+          trig.boundIMGs.push(img_E_04);
+          trig.boundIMGs.push(img_E_10);
+          trig.boundIMGs.push(img_E_11);
+          trig.boundIMGs.push(img_E_12);
+          trig.boundIMGs.push(img_E_13);
+          trig.boundIMGs.push(img_E_m1);
+          trig.boundIMGs.push(img_E_m2);
+          break;
+        case "S":
+          trig.boundIMGs.push(img_S_Big);
+
+          break;
+        case "W":
+        trig.boundIMGs.push(img_W_Big);
+
+          break;
+        case "NE":
+        trig.boundIMGs.push(img_NE_Big);
+
+          break;
+        case "NW":
+        trig.boundIMGs.push(img_NW_Big);
+
+          break;
+        case "SE":
+        trig.boundIMGs.push(img_SE_Big);
+
+          break;
+        case "SW":
+        trig.boundIMGs.push(img_SW_Big);
+
+          break;
+        default:
+
+      }
+    });
+
   }
 
   makeOctagon(centerX, centerY, radius, a) {
@@ -301,6 +393,7 @@ var img_E_Big,img_E_00,img_E_01,img_E_02,img_E_03,img_E_04,img_E_10,img_E_11,img
 
 function preload() {
   // loading our damned images... blame the artist for the amazing significant file-names ¬¬
+  // Eastern trig imgs
   img_E_Big = loadImage("imgs/E/_10A6219-1.jpg");
   img_E_00 = loadImage("imgs/E/FAHR_02.jpg");
   img_E_01 = loadImage("imgs/E/FAHR_01.jpg");
@@ -313,6 +406,81 @@ function preload() {
   img_E_13 = loadImage("imgs/E/_10A6231.jpg");
   img_E_m1 = loadImage("imgs/E/_10A6233.jpg");
   img_E_m2 = loadImage("imgs/E/SESION 4_10A6234-1.jpg");
+  // Northern trig imgs
+  img_N_Big = loadImage("imgs/N/SESION 6 CON FLASH_10A6829-1 copia.jpg");
+  im_N_00 = loadImage("imgs/N/BACK STAGE SESION 6 CON FLASH_10A6840-1 copia.jpg");
+  im_N_11 = loadImage("imgs/N/SESION 6 CON FLASH_10A6824-1 copia.jpg");
+  im_N_12 = loadImage("imgs/N/SESION 6 CON FLASH_10A6831-1 copia.jpg");
+  im_N_13 = loadImage("imgs/N/SESION 6 CON FLASH_10A6830-1 copia.jpg");
+  im_N_14 = loadImage("imgs/N/SESION 6 CON FLASH_10A6839-1 copia.jpg");
+  im_N_21 = loadImage("imgs/N/SESION 6 CON FLASH_10A6841-1 copia.jpg");
+  im_N_31 = loadImage("imgs/N/SESION 6 CON FLASH_10A6825-1 copia.jpg");
+  im_N_41 = loadImage("imgs/N/SESION 6 CON FLASH_10A6836-1 copia.jpg");
+  im_N_m1 = loadImage("imgs/N/SESION 6 CON FLASH_10A6832-1 copia.jpg");
+  im_N_m2 = loadImage("imgs/N/SESION 6 CON FLASH_10A6838-1 copia.jpg");
+  // Northeastern Trig imgs
+  img_NE_Big = loadImage("imgs/NE/FAHR_03.jpg");
+  img_NE_00 = loadImage("imgs/NE/FAHR_10.jpg");
+  img_NE_01 = loadImage("imgs/NE/FAHR_08.jpg");
+  img_NE_02 = loadImage("imgs/NE/FAHR_12.jpg");
+  img_NE_03 = loadImage("imgs/NE/FAHR_07.jpg");
+  img_NE_04 = loadImage("imgs/NE/FAHR_06.jpg");
+  img_NE_10 = loadImage("imgs/NE/FAHR_11.jpg");
+  img_NE_11 = loadImage("imgs/NE/FAHR_09.jpg");
+  img_NE_12 = loadImage("imgs/NE/FAHR_04.jpg");
+  img_NE_m0 = loadImage("imgs/NE/FAHR_13.jpg");
+  img_NE_m01 = loadImage("imgs/NE/FAHR_14.jpg");
+  img_NE_m10 = loadImage("imgs/NE/FAHR_05.jpg");
+  // Northwestern trig imgs
+  img_NW_Big = loadImage("imgs/NW/_10A5996.jpg");
+  img_NW_00 = loadImage("imgs/NW/_10A6035.jpg");
+  img_NW_01 = loadImage("imgs/NW/_10A6528.jpg");
+  img_NW_02 = loadImage("imgs/NW/_10A6521.jpg");
+  img_NW_03 = loadImage("imgs/NW/_10A6528.jpg");
+  img_NW_10 = loadImage("imgs/NW/7 SESION_10A6498-1.jpg");
+  img_NW_20 = loadImage("imgs/NW/_10A6045.jpg");
+  img_NW_m1 = loadImage("imgs/NW/_10A5981.jpg");
+  img_NW_m2 = loadImage("imgs/NW/7 SESION_10A6730-3.jpg");
+  // Southern trig imgs
+  img_S_Big = loadImage("imgs/S/edith azul_z.jpg");
+  img_S_00 = loadImage("imgs/S/DISTORSION AZUL Y ROJO SEGUNDA SESION_ddd copia.jpg");
+  img_S_11 = loadImage("imgs/S/_10A6819-1.jpg");
+  img_S_01 = loadImage("imgs/S/SESION 6 CON FLASH_10A6813-1 copia.jpg");
+  img_S_02 = loadImage("imgs/S/7 SESION_10A5960-1 copia.jpg");
+  img_S_12 = loadImage("imgs/S/LUZ DE LUNA_AA copia.jpg");
+  img_S_13 = loadImage("imgs/S/7 SESION_10A5965-1 copia.jpg");
+  img_S_m1 = loadImage("imgs/S/7 SESION_10A6403-1.jpg");
+  img_S_m2 = loadImage("imgs/S/7 SESION_10A5956-1 copia.jpg");
+  // Southeastern trig imgs
+  img_SE_Big = loadImage("imgs/SE/_10A6025.jpg");
+  img_SE_00 = loadImage("imgs/SE/novena sesion 2 parte_10A6897-1 copia.jpg");
+  img_SE_01 = loadImage("imgs/SE/SESION 2_10A6067-1 copia.jpg");
+  img_SE_02 = loadImage("imgs/SE/_10A6017.jpg");
+  img_SE_10 = loadImage("imgs/SE/PENELOPE_R_ copia.jpg");
+  img_SE_11 = loadImage("imgs/SE/PENELOPE_P_ copia.jpg");
+  img_SE_m0 = loadImage("imgs/SE/novena sesion 2 parte_10A6896-1 copia.jpg");
+  // Southwestern trig imgs
+  img_SW_Big = loadImage("imgs/SW/");
+  img_SW_00 = loadImage("imgs/SW/");
+  img_SW_01 = loadImage("imgs/SW/");
+  img_SW_02 = loadImage("imgs/SW/");
+  img_SW_10 = loadImage("imgs/SW/");
+  img_SW_11 = loadImage("imgs/SW/");
+  // Western trig buttload of imgs :')
+  img_W_Big = loadImage("imgs/W/00_A y E_ copia-1.jpg");
+  img_W_00 = loadImage("imgs/W/PENELOPE_M_ copia.jpg");
+  img_W_11 = loadImage("imgs/W/PENELOPE_Q_ copia.jpg");
+  img_W_22 = loadImage("imgs/W/_10A6014.jpg");
+  img_W_t0 = loadImage("imgs/W/_10A6524.jpg");
+  img_W_t1 = loadImage("imgs/W/Angel y edith copia.jpg");
+  img_W_t2 = loadImage("imgs/W/DISTORSION AZUL Y ROJO SEGUNDA SESION_BB copia.jpg");
+  img_W_b0 = loadImage("imgs/W/7 SESION_10A6594-1 copia.jpg");
+  img_W_b1 = loadImage("imgs/W/PENELOPE_N_ copia.jpg");
+  img_W_b2 = loadImage("imgs/W/_10A6026.jpg");
+  img_W_m0 = loadImage("imgs/W/PENELOPE_s_ copia.jpg");
+  img_W_m1 = loadImage("imgs/W/fahr distorsion azul y roja 2 sesion.jpg");
+  img_W_mt = loadImage("imgs/W/AZUL Y ROSA SEGUNDA SESION_AA copia.jpg");
+  img_W_mb = loadImage("imgs/W/escultura_1 copia.jpg");
 }
 
 function setup() {
@@ -333,7 +501,7 @@ function setup() {
   // background(52,13,13);
   testOctagon = new Octagon(canvasCenterX, canvasCenterY, octaRadius, octaSide);
 
-
+  testOctagon.linkBoundImgs();
 
   // loadImage('imgs/E/_10A6217.jpg', img => {
   //   testImg = img;
@@ -384,10 +552,8 @@ function mouseMoved(){
     if (trig.isMouseInMe()) {
       // we need this triangle at the end of the array so it gets drawn in front of all others...
       testOctagon.trigs.push(testOctagon.trigs.splice(testOctagon.trigs.indexOf(trig), 1)[0])
-      // console.log(trig.heading+" growing");
       trig.growing = true;
     } else {
-      // console.log(trig.heading+" shrinking");
       trig.growing = false;
     }
   });
