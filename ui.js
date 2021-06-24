@@ -3,20 +3,25 @@ let navButts = document.getElementsByClassName("navBarButton");
 
 for (let butt of navButts) {
   butt.onclick = () => {
+    var target;
     console.log(butt.id);
     switch (butt.id) {
       case "sectionOneButton":
-        document.getElementById("sectionOne").scrollIntoView();
+        target = document.getElementById("sectionOne");
         break;
       case "sectionTwoButton":
-        document.getElementById("sectionTwo").scrollIntoView();
+        target = document.getElementById("sectionTwo");
         break;
       case "sectionThreeButton":
-        document.getElementById("sectionThree").scrollIntoView();
+        target = document.getElementById("sectionThree");
+        break;
+      case "sectionFourButton":
+        target = document.getElementById("sectionFour");
         break;
       default:
         console.log("mananged to click a button that doesn't exist...");
     }
+    target.scrollIntoView(false);
   }
 }
 
