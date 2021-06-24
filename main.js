@@ -346,18 +346,18 @@ class Octagon {
           break;
         case "NE":
           trig.boundIMGs.push(img_NE_Big);
-          tring.boundIMGs.push(img_NE_Big);
-          tring.boundIMGs.push(img_NE_00);
-          tring.boundIMGs.push(img_NE_01);
-          tring.boundIMGs.push(img_NE_02);
-          tring.boundIMGs.push(img_NE_03);
-          tring.boundIMGs.push(img_NE_04);
-          tring.boundIMGs.push(img_NE_10);
-          tring.boundIMGs.push(img_NE_11);
-          tring.boundIMGs.push(img_NE_12);
-          tring.boundIMGs.push(img_NE_m0);
-          tring.boundIMGs.push(img_NE_m01);
-          tring.boundIMGs.push(img_NE_m10);
+          trig.boundIMGs.push(img_NE_Big);
+          trig.boundIMGs.push(img_NE_00);
+          trig.boundIMGs.push(img_NE_01);
+          trig.boundIMGs.push(img_NE_02);
+          trig.boundIMGs.push(img_NE_03);
+          trig.boundIMGs.push(img_NE_04);
+          trig.boundIMGs.push(img_NE_10);
+          trig.boundIMGs.push(img_NE_11);
+          trig.boundIMGs.push(img_NE_12);
+          trig.boundIMGs.push(img_NE_m0);
+          trig.boundIMGs.push(img_NE_m01);
+          trig.boundIMGs.push(img_NE_m10);
           break;
         case "NW":
           trig.boundIMGs.push(img_NW_Big);
