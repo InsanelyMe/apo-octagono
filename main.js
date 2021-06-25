@@ -218,7 +218,7 @@ class OctagonPiece {
     switch (this.heading) {
       case "N":
         // Big image centered and anchored to the edge
-        image(img_N_Big, this.AX-(bigImgLongSide*0.5), this.AY-(octaRadius+bigImgShortSide*0.3), bigImgLongSide, bigImgShortSide);
+        image(img_N_Big, this.AX-(bigImgLongSide*0.5), this.AY-(octaRadius*1.1), bigImgLongSide, bigImgShortSide);
         // centered image closest to the octagon's center. anchored only to Y axis
         image(im_N_00, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgLongSide);
         image(im_N_11, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.4), smallImgShortSide, smallImgLongSide);
@@ -715,6 +715,7 @@ function mouseMoved(){
     }
   });
 }
+
 
 function mousePressed(){
   // fill(13,91,13);
