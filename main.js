@@ -257,22 +257,41 @@ class OctagonPiece {
         image(img_E_m2, this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         break;
       case "S":
-        iamge(img_S_Big, this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.1), bigImgLongSide, bigImgShortSide);
-        iamge(img_S_00, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
-        iamge(img_S_11, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
+        image(img_S_Big, this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.1), bigImgLongSide, bigImgShortSide);
+        image(img_S_00, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
+        image(img_S_11, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        iamge(img_S_01, anchorX-(smallImgShortSide),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        iamge(img_S_02, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_01, anchorX-(smallImgShortSide),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_02, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
-        iamge(img_S_12, anchorX+(smallImgShortSide*0.2),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        iamge(img_S_13, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_12, anchorX+(smallImgShortSide*0.2),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_13, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
         // anchored to the middle... (y axis)
-        iamge(img_S_m1, this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*3.0), smallImgShortSide, smallImgLongSide);
-        iamge(img_S_m2, this.AX-(smallImgShortSide/2),  this.AY+(smallImgShortSide*2.6), smallImgLongSide, smallImgShortSide);
+        image(img_S_m1, this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*3.0), smallImgShortSide, smallImgLongSide);
+        image(img_S_m2, this.AX-(smallImgShortSide/2),  this.AY+(smallImgShortSide*2.6), smallImgLongSide, smallImgShortSide);
         break;
       case "W":
+        image(img_W_Big, this.AX-(octaRadius*1.1), this.AY-(bigImgLongSide/2), bigImgShortSide, bigImgLongSide);
+        image(img_W_00, this.AX-(octaRadius*0.2)+(smallImgLongSide/2), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
+        image(img_W_11, this.AX-(octaRadius*0.3)+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
+        image(img_W_22, this.AX-(octaRadius*0.4)+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
+        anchorX = (this.AX+this.BX)/2;
+        anchorY = (this.AY+this.BY)/2;
+        image(img_W_t0, anchorX-(smallImgLongSide*0.3), anchorY+(smallImgShortSide*0.5), smallImgLongSide, smallImgShortSide);
+        image(img_W_t1, anchorX-(smallImgShortSide*4), anchorY, smallImgShortSide, smallImgLongSide);
+        image(img_W_t2, anchorX-(smallImgShortSide*7), anchorY-(smallImgLongSide*0.8), smallImgShortSide, smallImgLongSide);
+        anchorX = (this.AX+this.CX)/2;
+        anchorY = (this.AY+this.CY)/2;
+        image(img_W_b0, anchorX-(smallImgLongSide*1.3), anchorY-(smallImgShortSide*1.3), smallImgLongSide, smallImgShortSide);
+        image(img_W_b1, anchorX-(smallImgShortSide*4.8), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        image(img_W_b2, anchorX-(smallImgShortSide*6.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+
+        image(img_W_m0, this.AX-(smallImgLongSide*3), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
+        image(img_W_m1, this.AX-(smallImgLongSide*4.5), this.AY-(smallImgLongSide/2), smallImgLongSide, smallImgLongSide);
+        image(img_W_mt, this.AX-(octaRadius), this.AY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        image(img_W_mb, this.AX-(octaRadius), this.AY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
         break;
       case "NE":
         break;
@@ -420,7 +439,6 @@ class Octagon {
           console.log("tried to link images to a triangle that doesn't exist :')'");
       }
     });
-
   }
 
   makeOctagon(centerX, centerY, radius, a) {
