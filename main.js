@@ -669,7 +669,7 @@ function setup() {
 
 
 function draw() {
-  background(25);
+  background(13,13,13);
   // image(img_E_Big,0,0,200,400);
 
 
