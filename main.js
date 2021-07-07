@@ -9,6 +9,27 @@ let testOctagon;
 
 //  --------------------- Octagon Presentation ------------------------
 
+// ----------------- IMG bounding boxes -------------------------------
+
+class OctaImage {
+  constructor( someIMG, someX, someY, someWidth, someHeight) {
+    this.image = someIMG;
+
+    this.xPos = someX;
+    this.yPos = someY;
+    this.xSize = someWidth;
+    this.ySize = someHeight;
+
+    this.selected = false;
+  }
+
+  drawMe(){
+
+  }
+}
+
+// ------------- Triangle blocks to build octa ------------------------
+
 class OctagonPiece {
   constructor(heading, AX, AY, BX, BY, CX, CY) {
     // heading is a string identifying the triangle's orientation
@@ -211,153 +232,235 @@ class OctagonPiece {
     // we have to draw each image in a specific point in each triangle:
     let smallImgLongSide = octaSide * 0.16;
     let smallImgShortSide = octaSide * 0.125;
-    let bigImgLongSide = octaSide * 0.3;
-    let bigImgShortSide = octaSide * 0.25;
+    let bigImgLongSide = octaSide * 0.35;
+    let bigImgShortSide = octaSide * 0.26;
     let anchorX = 0;
     let anchorY = 0;
+    fill(200,50,50,69);
     switch (this.heading) {
       case "N":
         // Big image centered and anchored to the edge
-        image(img_N_Big, this.AX-(bigImgLongSide*0.5), this.AY-(octaRadius*1.1), bigImgLongSide, bigImgShortSide);
+        image(img_N_Big, this.AX-((bigImgLongSide+15)*0.5), this.AY-((octaRadius*1.05)+bigImgShortSide), bigImgLongSide+15, bigImgShortSide);
+        // rect(this.AX-((bigImgLongSide+15)*0.5), this.AY-((octaRadius*1.05)+bigImgShortSide), bigImgLongSide+15, bigImgShortSide);
         // centered image closest to the octagon's center. anchored only to Y axis
-        image(im_N_00, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgLongSide);
-        image(im_N_11, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.4), smallImgShortSide, smallImgLongSide);
+        image(im_N_00, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.32), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.32), smallImgShortSide, smallImgLongSide);
+        image(im_N_11, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.5), smallImgShortSide, smallImgLongSide);
         // set anchors to right side (at least I hope it is the right side...)
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        image(im_N_12, anchorX+(smallImgShortSide), anchorY-(smallImgLongSide), smallImgLongSide, smallImgShortSide);
-        image(im_N_13, anchorX+(smallImgShortSide*1.3), anchorY-(smallImgLongSide*1.3), smallImgLongSide, smallImgShortSide);
-        image(im_N_14, anchorX+(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.8), smallImgLongSide, smallImgShortSide);
+        image(im_N_12, anchorX, anchorY-(smallImgLongSide), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX, anchorY-(smallImgLongSide), smallImgShortSide, smallImgLongSide);
+        image(im_N_13, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
+        image(im_N_14, anchorX-(smallImgShortSide*1.2), anchorY-(smallImgLongSide*3.6), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX-(smallImgShortSide*1.2), anchorY-(smallImgLongSide*3.6), smallImgLongSide, smallImgShortSide);
         // set anchors to left side, i hope
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
-        image(im_N_21, anchorX-(smallImgShortSide), anchorY-(smallImgLongSide), smallImgLongSide, smallImgShortSide);
-        image(im_N_31, anchorX-(smallImgShortSide*1.3), anchorY-(smallImgLongSide*1.3), smallImgLongSide, smallImgShortSide);
-        image(im_N_41, anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.8), smallImgLongSide, smallImgShortSide);
+        image(im_N_21, anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*1.15), smallImgLongSide, smallImgLongSide);
+        // rect(anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*1.15), smallImgLongSide, smallImgLongSide);
+        image(im_N_31, anchorX-(smallImgShortSide*0.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
+        image(im_N_41, anchorX-(smallImgShortSide*0.1), anchorY-(smallImgLongSide*3.4), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX-(smallImgShortSide*0.1), anchorY-(smallImgLongSide*3.4), smallImgLongSide, smallImgShortSide);
         // more centered images anchored to y axis
-        image(im_N_m1, this.AX-(smallImgShortSide/2), this.AY-(smallImgShortSide*3.5), smallImgLongSide, smallImgShortSide);
-        image(im_N_m2, this.AX-(smallImgShortSide/2), this.AY-(smallImgShortSide*2), smallImgLongSide, smallImgShortSide);
+        image(im_N_m1, this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.79), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.79), smallImgLongSide, smallImgShortSide);
+        image(im_N_m2, this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.91), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.91), smallImgLongSide, smallImgShortSide);
         break;
       case "E":
         image(img_E_Big, this.AX+(octaRadius+(octaSide*0.3)), this.AY-(octaSide*0.16), octaSide*0.25, octaSide*0.3);
+        // rect(this.AX+(octaRadius+(octaSide*0.05)), this.AY-(octaSide*0.16), octaSide*0.25, octaSide*0.3);
         image(img_E_00, this.AX+(octaRadius*0.2), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX+(octaRadius*0.2), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
         image(img_E_01, anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
+        // rect(anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
         image(img_E_02, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
         image(img_E_03, anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
+        // rect(anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
         image(img_E_04, anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
+        // rect(anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
         image(img_E_10, anchorX-(smallImgShortSide*1.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*1.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
         image(img_E_11, anchorX-(smallImgShortSide*0.5), anchorY+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.5), anchorY+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
         image(img_E_12, anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
+        // rect(anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
         image(img_E_13, anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide),     smallImgShortSide+8, smallImgLongSide+8);
+        // rect(anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide),     smallImgShortSide+8, smallImgLongSide+8);
         image(img_E_m1, this.AX+(octaRadius-(smallImgShortSide*3.5)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX+(octaRadius-(smallImgShortSide*3.5)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         image(img_E_m2, this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         break;
       case "S":
-        image(img_S_Big, this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.1), bigImgLongSide, bigImgShortSide);
+        image(img_S_Big, this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.05), bigImgLongSide, bigImgShortSide);
+        // rect(this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.05), bigImgLongSide, bigImgShortSide);
         image(img_S_00, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
         image(img_S_11, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        image(img_S_01, anchorX-(smallImgShortSide),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_S_02, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_01, anchorX,  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX,  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_02, anchorX-smallImgShortSide,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-smallImgShortSide,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
-        image(img_S_12, anchorX+(smallImgShortSide*0.2),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_S_12, anchorX-(smallImgShortSide*0.9),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.9),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
         image(img_S_13, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
         // anchored to the middle... (y axis)
-        image(img_S_m1, this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*3.0), smallImgShortSide, smallImgLongSide);
-        image(img_S_m2, this.AX-(smallImgShortSide/2),  this.AY+(smallImgShortSide*2.6), smallImgLongSide, smallImgShortSide);
+        image(img_S_m1, this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*4.6), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*4.6), smallImgShortSide, smallImgLongSide);
+        image(img_S_m2, this.AX-(smallImgLongSide/2),  this.AY+(smallImgShortSide*8.5), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide/2),  this.AY+(smallImgShortSide*8.5), smallImgLongSide, smallImgShortSide);
         break;
       case "W":
-        image(img_W_Big, this.AX-(octaRadius*1.1), this.AY-(bigImgLongSide/2), bigImgShortSide, bigImgLongSide);
-        image(img_W_00, this.AX-(octaRadius*0.2)+(smallImgLongSide/2), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
-        image(img_W_11, this.AX-(octaRadius*0.3)+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
-        image(img_W_22, this.AX-(octaRadius*0.4)+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
+        image(img_W_Big, this.AX-((octaRadius*1.05)+bigImgShortSide), this.AY-(bigImgLongSide/2), bigImgShortSide, bigImgLongSide);
+        // rect(this.AX-((octaRadius*1.05)+bigImgShortSide), this.AY-(bigImgLongSide/2), bigImgShortSide, bigImgLongSide);
+        image(img_W_00, this.AX-(smallImgLongSide+(octaRadius*0.21))+(smallImgLongSide/2), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide+(octaRadius*0.21))+(smallImgLongSide/2), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
+        image(img_W_11, this.AX-(smallImgShortSide+(octaRadius*0.32))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(smallImgShortSide+(octaRadius*0.32))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
+        image(img_W_22, this.AX-(smallImgShortSide+(octaRadius*0.43))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(smallImgShortSide+(octaRadius*0.43))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
-        image(img_W_t0, anchorX-(smallImgLongSide*0.3), anchorY+(smallImgShortSide*0.5), smallImgLongSide, smallImgShortSide);
-        image(img_W_t1, anchorX-(smallImgShortSide*4), anchorY, smallImgShortSide, smallImgLongSide);
-        image(img_W_t2, anchorX-(smallImgShortSide*7), anchorY-(smallImgLongSide*0.8), smallImgShortSide, smallImgLongSide);
+        image(img_W_t0, anchorX-(smallImgLongSide*1.1), anchorY+(smallImgShortSide*0.1), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX-(smallImgLongSide*1.1), anchorY+(smallImgShortSide*0.1), smallImgLongSide, smallImgShortSide);
+        image(img_W_t1, anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_W_t2, anchorX-(smallImgShortSide*4.8), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*4.8), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        image(img_W_b0, anchorX-(smallImgLongSide*1.3), anchorY-(smallImgShortSide*1.3), smallImgLongSide, smallImgShortSide);
-        image(img_W_b1, anchorX-(smallImgShortSide*4.8), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_W_b2, anchorX-(smallImgShortSide*6.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        image(img_W_b0, anchorX-(smallImgLongSide*1.1), anchorY-(smallImgShortSide*1.1), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX-(smallImgLongSide*1.1), anchorY-(smallImgShortSide*1.1), smallImgLongSide, smallImgShortSide);
+        image(img_W_b1, anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
+        image(img_W_b2, anchorX-(smallImgShortSide*4.8), anchorY, smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*4.8), anchorY, smallImgShortSide, smallImgLongSide);
         // wtf happenned here? why is there an extra line????
-        image(img_W_m0, this.AX-(smallImgLongSide*3), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
-        image(img_W_m1, this.AX-(smallImgLongSide*4.5), this.AY-(smallImgLongSide/2), smallImgLongSide, smallImgLongSide);
-        image(img_W_mt, this.AX-(octaRadius), this.AY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_W_mb, this.AX-(octaRadius), this.AY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
+        // 'was' there an extra line... oh well
+        image(img_W_m0, this.AX-(smallImgLongSide*5.05), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
+        // rect(this.AX-(smallImgLongSide*5.05), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
+        image(img_W_m1, this.AX-(smallImgLongSide*6.5), this.AY-(smallImgLongSide/2), smallImgLongSide, smallImgLongSide);
+        // rect(this.AX-(smallImgLongSide*6.5), this.AY-(smallImgLongSide/2), smallImgLongSide, smallImgLongSide);
+        image(img_W_mt, this.AX-(octaRadius*0.98), this.AY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.98), this.AY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        image(img_W_mb, this.AX-(octaRadius*0.98), this.AY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.98), this.AY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
         break;
       case "NE":
-        image(img_NE_Big, this.AX+octaRadius, this.AY-octaRadius, bigImgShortSide, bigImgLongSide);
+        image(img_NE_Big, this.AX+(octaRadius*0.72), this.AY-(octaRadius*0.72)-bigImgLongSide, bigImgShortSide, bigImgLongSide);
+        // rect(this.AX+(octaRadius*0.72), this.AY-(octaRadius*0.72)-bigImgLongSide, bigImgShortSide, bigImgLongSide);
         anchorX = this.AX+(octaRadius*0.2);
         anchorY = this.AY-(octaRadius*0.2);
-        image(img_NE_00, anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgShortSide, smallImgShortSide);
+        image(img_NE_00, anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgShortSide, smallImgLongSide);
         anchorX = this.AX+(octaRadius*0.3);
         anchorY = this.AY-(octaRadius*0.3);
-        image(img_NE_01, anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgShortSide, smallImgShortSide);
+        image(img_NE_01, anchorX-(smallImgShortSide*0.35), anchorY+(smallImgShortSide*0.05), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.35), anchorY+(smallImgShortSide*0.05), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
-        image(img_NE_02, anchorX-(smallImgLongSide*1.2), anchorY-(smallImgShortSide*1.8), smallImgLongSide, smallImgShortSide);
-        image(img_NE_03, anchorX+(smallImgShortSide*2), anchorY-(smallImgLongSide*1.8), smallImgShortSide, smallImgLongSide);
-        image(img_NE_04, anchorX+(smallImgLongSide*2.5), anchorY-(smallImgShortSide*2.4), smallImgLongSide, smallImgShortSide);
+        image(img_NE_02, anchorX-(smallImgLongSide*0.9), anchorY-(smallImgShortSide*1.2), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX-(smallImgLongSide*0.9), anchorY-(smallImgShortSide*1.2), smallImgLongSide, smallImgShortSide);
+        image(img_NE_03, anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.7), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.7), smallImgShortSide, smallImgLongSide);
+        image(img_NE_04, anchorX+(smallImgLongSide*2.1), anchorY-(smallImgShortSide*2.8), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX+(smallImgLongSide*2.1), anchorY-(smallImgShortSide*2.8), smallImgLongSide, smallImgShortSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        image(img_NE_10, anchorX-(smallImgShortSide*0.2), anchorY+(smallImgLongSide*0.25), smallImgShortSide, smallImgLongSide);
-        image(img_NE_11, anchorX+(smallImgShortSide*1.5), anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide);
-        image(img_NE_12, anchorX+(smallImgShortSide*2.2), anchorY-(smallImgLongSide*2.6), smallImgShortSide, smallImgLongSide);
-        anchorX = this.AX+(octaRadius*0.69);
-        anchorY = this.AY-(octaRadius*0.69);
-        image(img_NE_m0, anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgLongSide, smallImgLongSide);
-        anchorX = this.AX+(octaRadius*0.91);
-        anchorY = this.AY-(octaRadius*0.91);
-        image(img_NE_m01, anchorX-(smallImgLongSide), anchorY-(smallImgLongSide), smallImgLongSide, smallImgLongSide);
-        image(img_NE_m10, anchorX+(smallImgLongSide*0.1), anchorY+(smallImgLongSide*0.1), smallImgLongSide, smallImgLongSide);
+        image(img_NE_10, anchorX+(smallImgShortSide*0.2), anchorY+(smallImgLongSide*0.25), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*0.2), anchorY+(smallImgLongSide*0.25), smallImgShortSide, smallImgLongSide);
+        image(img_NE_11, anchorX+(smallImgShortSide*0.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*0.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        image(img_NE_12, anchorX+(smallImgShortSide*1.8), anchorY-(smallImgLongSide*2.9), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*1.8), anchorY-(smallImgLongSide*2.9), smallImgShortSide, smallImgLongSide);
+        anchorX = this.AX+(octaRadius*0.42);
+        anchorY = this.AY-(octaRadius*0.44);
+        image(img_NE_m0, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgShortSide*0.5), smallImgLongSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.5), anchorY-(smallImgShortSide*0.5), smallImgLongSide, smallImgLongSide);
+        anchorX = this.AX+(octaRadius*0.6);
+        anchorY = this.AY-(octaRadius*0.6);
+        image(img_NE_m01, anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*0.9), smallImgLongSide, smallImgLongSide);
+        // rect(anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*0.9), smallImgLongSide, smallImgLongSide);
+        image(img_NE_m10, anchorX+(smallImgLongSide*0.2), anchorY+(smallImgLongSide*0.1), smallImgLongSide, smallImgLongSide);
+        // rect(anchorX+(smallImgLongSide*0.2), anchorY+(smallImgLongSide*0.1), smallImgLongSide, smallImgLongSide);
         break;
       case "NW":
-        image(img_NW_Big, this.AX-(octaRadius*1.2), this.AY-(octaRadius*1.2), bigImgLongSide, bigImgShortSide);
+        image(img_NW_Big, this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY-(octaRadius*0.72)-bigImgShortSide, bigImgLongSide, bigImgShortSide);
+        // rect(this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY-(octaRadius*0.72)-bigImgShortSide, bigImgLongSide, bigImgShortSide);
         image(img_NW_00, this.AX-(octaRadius*0.2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgShortSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_NW_01, anchorX-(smallImgShortSide), anchorY+(smallImgLongSide), smallImgShortSide, smallImgLongSide);
-        image(img_NW_02, anchorX-(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.8), smallImgShortSide, smallImgLongSide);
-        image(img_NW_03, anchorX-(smallImgShortSide*2.5), anchorY-(smallImgShortSide*1.6), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgShortSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        image(img_NW_10, anchorX, anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide);
-        image(img_NW_20, anchorX-(smallImgLongSide*2.4), anchorY-(smallImgLongSide*1.3), smallImgShortSide, smallImgLongSide);
-        image(img_NW_m1, this.AX-(octaRadius*0.6), this.AY-(octaRadius*0.6), smallImgShortSide, smallImgShortSide);
-        image(img_NW_m2, this.AX-(octaRadius*0.8), this.AY-(octaRadius*0.8), smallImgShortSide, smallImgLongSide);
+        image(img_NW_01, anchorX-(smallImgShortSide*0.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*0.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide)
+        image(img_NW_02, anchorX-(smallImgShortSide*1.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*1.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        image(img_NW_03, anchorX-(smallImgShortSide*2.9), anchorY-(smallImgShortSide*3.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide*2.9), anchorY-(smallImgShortSide*3.5), smallImgShortSide, smallImgLongSide);
+        anchorX = (this.AX+this.BX)/2;
+        anchorY = (this.AY+this.BY)/2;
+        image(img_NW_10, anchorX+(smallImgShortSide*0.2), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*0.2), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        image(img_NW_20, anchorX-(smallImgLongSide*2.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgLongSide*2.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
+        image(img_NW_m1, this.AX-(octaRadius*0.46), this.AY-(octaRadius*0.49), smallImgLongSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.46), this.AY-(octaRadius*0.49), smallImgLongSide, smallImgLongSide);
+        image(img_NW_m2, this.AX-(octaRadius*0.65), this.AY-(octaRadius*0.65), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.65), this.AY-(octaRadius*0.65), smallImgShortSide, smallImgLongSide);
         break;
       case "SE":
-        image(img_SE_Big, this.AX+(octaRadius*1.1), this.AY+(octaRadius*0.8), bigImgShortSide, bigImgLongSide);
-        image(img_SE_00, this.AX+(octaRadius*0.2), this.AY+(octaRadius*0.2), smallImgShortSide, smallImgLongSide);
+        image(img_SE_Big, this.AX+(octaRadius*0.72), this.AY+(octaRadius*0.72), bigImgShortSide, bigImgLongSide);
+        // rect(this.AX+(octaRadius*0.72), this.AY+(octaRadius*0.72), bigImgShortSide, bigImgLongSide);
+        image(img_SE_00, this.AX+(octaRadius*0.1), this.AY+(octaRadius*0.09), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX+(octaRadius*0.1), this.AY+(octaRadius*0.09), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
-        image(img_SE_01, anchorX-(smallImgShortSide/2), anchorY+(smallImgShortSide), smallImgShortSide, smallImgShortSide);
-        image(img_SE_02, anchorX+(smallImgLongSide*1.5), anchorY+(smallImgShortSide*2.2), smallImgLongSide, smallImgShortSide);
+        image(img_SE_01, anchorX-(smallImgLongSide*0.5), anchorY+(smallImgLongSide*0.4), smallImgLongSide, smallImgLongSide);
+        // rect(anchorX-(smallImgLongSide*0.5), anchorY+(smallImgLongSide*0.4), smallImgLongSide, smallImgLongSide);
+        image(img_SE_02, anchorX+(smallImgLongSide*1.5), anchorY+(smallImgShortSide*1.8), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX+(smallImgLongSide*1.5), anchorY+(smallImgShortSide*1.8), smallImgLongSide, smallImgShortSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
-        image(img_SE_10, anchorX+(smallImgShortSide*1.5), anchorY-(smallImgLongSide*1.8), smallImgShortSide, smallImgLongSide);
-        image(img_SE_11, anchorX+(smallImgShortSide*2.2), anchorY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
+        image(img_SE_10, anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
+        image(img_SE_11, anchorX+(smallImgShortSide*1.6), anchorY+(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX+(smallImgShortSide*1.6), anchorY+(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide);
         break;
       case "SW":
-        image(img_SW_Big, this.AX-(octaRadius), this.AY+(octaRadius), bigImgLongSide, bigImgShortSide);
-        image(img_SW_00, this.AX-(octaRadius*0.2)+(smallImgShortSide/2), this.AY+(octaRadius*0.2), smallImgShortSide, smallImgLongSide);
+        image(img_SW_Big, this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY+(octaRadius*0.72), bigImgLongSide, bigImgShortSide);
+        // rect(this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY+(octaRadius*0.72), bigImgLongSide, bigImgShortSide);
+        image(img_SW_00, this.AX-(octaRadius*0.12)-smallImgShortSide, this.AY+(octaRadius*0.12), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.12)-smallImgShortSide, this.AY+(octaRadius*0.12), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.BX)/2;
         anchorY = (this.AY+this.BY)/2;
         image(img_SW_01, anchorX, anchorY+(smallImgShortSide*0.3), smallImgShortSide, smallImgLongSide);
-        image(img_SW_02, anchorX-(smallImgLongSide*1.8), anchorY-(smallImgShortSide*1.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX, anchorY+(smallImgShortSide*0.3), smallImgShortSide, smallImgLongSide);
+        image(img_SW_02, anchorX-(smallImgLongSide*1.8), anchorY+(smallImgShortSide*1.5), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgLongSide*1.8), anchorY+(smallImgShortSide*1.5), smallImgShortSide, smallImgLongSide);
         anchorX = (this.AX+this.CX)/2;
         anchorY = (this.AY+this.CY)/2;
         image(img_SW_10, anchorX-(smallImgShortSide+1.2), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_SW_11, anchorX-(smallImgLongSide*2.2), anchorY+(smallImgShortSide*2.2), smallImgLongSide, smallImgShortSide);
-        image(img_SW_m0, this.AX+(octaRadius*0.8), this.AY+(octaRadius*0.8), smallImgShortSide, smallImgLongSide);
+        // rect(anchorX-(smallImgShortSide+1.2), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
+        image(img_SW_11, anchorX-(smallImgLongSide*2.2), anchorY+(smallImgShortSide*1.6), smallImgLongSide, smallImgShortSide);
+        // rect(anchorX-(smallImgLongSide*2.2), anchorY+(smallImgShortSide*1.6), smallImgLongSide, smallImgShortSide);
+        image(img_SW_m0, this.AX-(octaRadius*0.45)-smallImgShortSide, this.AY+(octaRadius*0.45), smallImgShortSide, smallImgLongSide);
+        // rect(this.AX-(octaRadius*0.45)-smallImgShortSide, this.AY+(octaRadius*0.45), smallImgShortSide, smallImgLongSide);
         break;
       default:
         console.log("broken image rendering in 'drawBoundImgs'");
@@ -530,9 +633,6 @@ class Octagon {
   }
 }
 
-
-
-
 // --------------------------- main P5 functions ----------------------
 
 
@@ -547,6 +647,7 @@ var img_S_Big,img_S_00,img_S_11,img_S_01,img_S_02,img_S_12,img_S_13,img_S_m1,img
 var img_SE_Big,img_SE_00,img_SE_01,img_SE_02,img_SE_10,img_SE_11;
 var img_SW_Big,img_SW_00,img_SW_01,img_SW_02,img_SW_10,img_SW_11,img_SW_m0;
 var img_W_Big,img_W_00,img_W_11,img_W_22,img_W_t0,img_W_t1,img_W_t2,img_W_b0,img_W_b1,img_W_b2,img_W_m0,img_W_m1,img_W_mt,img_W_mb;
+
 
 function preload() {
   // loading our damned images... blame the artist for the amazing significant file-names ¬¬
@@ -705,6 +806,7 @@ function draw() {
 
 function mouseMoved(){
   // test octagon collision
+  // check 'some' function to kill the loop and stop growing trigs in the background
   testOctagon.trigs.forEach((trig) => {
     if (trig.isMouseInMe()) {
       // we need this triangle at the end of the array so it gets drawn in front of all others...
