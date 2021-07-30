@@ -79,26 +79,26 @@ class OctaImage {
   }
 
   drawMe(){
+    push();
+    if (this.selected) {
+      strokeWeight(1);
+      stroke(255);
+      fill(0,69,0);
+    } else if (this.hovered) {
+      strokeWeight(2);
+      stroke(210);
+      fill(200,0,0);
+    } else {
+      noStroke();
+      fill(200,0,0,69);
+    }
+    rect(this.xPos, this.yPos, this.xSize, this.ySize);
+    pop();
     try {
       image(this.image, this.xPos, this.yPos, this.xSize, this.ySize);
     } catch (e) {
-      // console.log("failed to draw an image... replacing with primitive");
+      console.log("failed to draw an image... replacing with primitive");
       // console.log(e);
-      push();
-      if (this.selected) {
-        strokeWeight(1);
-        stroke(255);
-        fill(0,69,0);
-      } else if (this.hovered) {
-        strokeWeight(2);
-        stroke(91,91,91);
-        fill(200,0,0);
-      } else {
-        noStroke();
-        fill(200,0,0,69);
-      }
-      rect(this.xPos, this.yPos, this.xSize, this.ySize);
-      pop();
     }
   }
 }

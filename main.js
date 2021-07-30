@@ -171,8 +171,8 @@ function displayBigImage(bigImage) {
   xTransform = translationModifier * (activeTrig.AX - ((activeTrig.BX+activeTrig.CX)/2));
   yTransform = translationModifier * (activeTrig.AY - ((activeTrig.BY+activeTrig.CY)/2));
 
-  enlargedImage = new OctaImage("mega-"+bigImage.id, bigImage.imgage, (width*0.1)-xTransform, (height*0.075)-yTransform, width*0.8, height*0.75);
-  enlargedImage.selected = true;
+  enlargedImage = new OctaImage("mega-"+bigImage.id, bigImage.image, (width*0.1)-xTransform, (height*0.075)-yTransform, width*0.8, height*0.75);
+  // enlargedImage.selected = true;
 }
 
 
