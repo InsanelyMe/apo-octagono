@@ -5,636 +5,23 @@ let canvasCenterX;
 let canvasCenterY;
 let octaRadius;
 let octaSide;
+let smallImgLongSide;
+let smallImgShortSide;
+let bigImgLongSide;
+let bigImgShortSide;
+let mainHugeImageShortSide;
+// let mainHugeImageLongSide;
+
+let xTransform, yTransform;
+
 let testOctagon;
 
+let activeTrig;
+let bigImgsList = [];
+
+let enlargedImage = null;
+
 //  --------------------- Octagon Presentation ------------------------
-
-// ----------------- IMG bounding boxes -------------------------------
-
-class OctaImage {
-  constructor( someIMG, someX, someY, someWidth, someHeight) {
-    this.image = someIMG;
-
-    this.xPos = someX;
-    this.yPos = someY;
-    this.xSize = someWidth;
-    this.ySize = someHeight;
-
-    this.selected = false;
-  }
-
-  drawMe(){
-
-  }
-}
-
-// ------------- Triangle blocks to build octa ------------------------
-
-class OctagonPiece {
-  constructor(heading, AX, AY, BX, BY, CX, CY) {
-    // heading is a string identifying the triangle's orientation
-    // possible values: N NE E SE S SW W NW
-    this.heading = heading;
-    // rest of params are point coordinates for each of the 3 triangles' vertices
-    this.AX = AX;
-    this.AY = AY;
-    this.BX = BX;
-    this.BY = BY;
-    this.CX = CX;
-    this.CY = CY;
-
-    this.OGverts = [AX, AY, BX, BY, CX, CY];
-    this.currentVerts = [];
-
-    this.growthRate = 13; // found this value after testing many different ones :P
-    // should we be increasing in size?
-    this.growing = false;
-    // how many pixels can one of our points be displaced?
-    this.maxGrowth = 69;
-
-    // images contained by this triangle
-    this.boundIMGs = [];
-    // should imgs be big?
-    this.bigImgs = false;
-  }
-
-
-  updateVerts() {
-      this.currentVerts = [this.AX, this.AY, this.BX, this.BY, this.CX, this.CY];
-  }
-
-  bigAsCanBe() {
-    for (let i = 0; i < this.OGverts.length; i++) {
-      if (abs(this.OGverts[i] - this.currentVerts[i]) > this.maxGrowth) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  smallAsCanBe(){
-    for (let i = 0; i < this.OGverts.length; i++) {
-      if (abs(this.OGverts[i] - this.currentVerts[i]) > 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  grow(){
-    // need to check heading so we can grow in the appropiate direction
-    switch (this.heading) {
-      case "N":
-        this.AY += this.growthRate;
-        this.BX += this.growthRate;
-        this.BY -= this.growthRate;
-        this.CX -= this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "NE":
-        this.AX -= this.growthRate;
-        this.AY += this.growthRate;
-        this.BX += this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "E":
-        this.AX -= this.growthRate;
-        this.BX += this.growthRate;
-        this.BY -= this.growthRate;
-        this.CX += this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "SE":
-        this.AX -= this.growthRate;
-        this.AY -= this.growthRate;
-        this.BX += this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "S":
-        this.AY -= this.growthRate;
-        this.BX += this.growthRate;
-        this.BY += this.growthRate;
-        this.CX -= this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "SW":
-        this.AX += this.growthRate;
-        this.AY -= this.growthRate;
-        this.BX -= this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "W":
-        this.AX += this.growthRate;
-        this.BX -= this.growthRate;
-        this.BY -= this.growthRate;
-        this.CX -= this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "NW":
-        this.AX += this.growthRate;
-        this.AY += this.growthRate;
-        this.BX -= this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      default:
-        console.log("somehow attempted to grow a triangle that should not exist...");
-      }
-  }
-
-  unGrow(){
-    // need to check heading so we can ungrow in the appropiate direction
-    switch (this.heading) {
-      case "N":
-        this.AY -= this.growthRate;
-        this.BX -= this.growthRate;
-        this.BY += this.growthRate;
-        this.CX += this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "NE":
-        this.AX += this.growthRate;
-        this.AY -= this.growthRate;
-        this.BX -= this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      case "E":
-        this.AX += this.growthRate;
-        this.BX -= this.growthRate;
-        this.BY += this.growthRate;
-        this.CX -= this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "SE":
-        this.AX += this.growthRate;
-        this.AY += this.growthRate;
-        this.BX -= this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "S":
-        this.AY += this.growthRate;
-        this.BX -= this.growthRate;
-        this.BY -= this.growthRate;
-        this.CX += this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "SW":
-        this.AX -= this.growthRate;
-        this.AY += this.growthRate;
-        this.BX += this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "W":
-        this.AX -= this.growthRate;
-        this.BX += this.growthRate;
-        this.BY += this.growthRate;
-        this.CX += this.growthRate;
-        this.CY -= this.growthRate;
-        break;
-      case "NW":
-        this.AX -= this.growthRate;
-        this.AY -= this.growthRate;
-        this.BX += this.growthRate;
-        this.CY += this.growthRate;
-        break;
-      default:
-        console.log("somehow attempted to ungrow a triangle that should not exist...");
-      }
-  }
-
-  isMouseInMe() {
-    // store mouse position in case some twitchy user moves it faster than this function runs...
-    let mX = mouseX;
-    let mY = mouseY;
-    // get area of myself
-    let areaOrig = floor(abs((this.BX - this.AX) * (this.CY - this.AY) - (this.CX - this.AX) * (this.BY - this.AY)));
-    // console.log(this.heading + " triangle area: " + areaOrig);
-    // make new triangles from the original's vertices to the point in question
-    // get their areas too
-    let area1 = floor(abs((this.AX - mX) * (this.BY - mY) - (this.BX - mX) * (this.AY - mY)));
-    let area2 = floor(abs((this.BX - mX) * (this.CY - mY) - (this.CX - mX) * (this.BY - mY)));
-    let area3 = floor(abs((this.CX - mX) * (this.AY - mY) - (this.AX - mX) * (this.CY - mY)));
-    // console.log("Sum of other triangles areas: " + (area1 + area2 + area3));
-    // if the sum of the 3 new areas fits in the original, then we are inside that triangle
-    if((area1+area2+area3) <= areaOrig){
-      return true;
-    }
-    return false;
-  }
-
-  drawMe(){
-    // temp gray color so I can see them...
-    fill(50,50,50,91);
-    // noStroke();
-    triangle(this.AX,this.AY,this.BX,this.BY,this.CX,this.CY);
-  }
-
-  drawBoundImgs(){
-    // we have to draw each image in a specific point in each triangle:
-    let smallImgLongSide = octaSide * 0.16;
-    let smallImgShortSide = octaSide * 0.125;
-    let bigImgLongSide = octaSide * 0.35;
-    let bigImgShortSide = octaSide * 0.26;
-    let anchorX = 0;
-    let anchorY = 0;
-    fill(200,50,50,69);
-    switch (this.heading) {
-      case "N":
-        // Big image centered and anchored to the edge
-        image(img_N_Big, this.AX-((bigImgLongSide+15)*0.5), this.AY-((octaRadius*1.05)+bigImgShortSide), bigImgLongSide+15, bigImgShortSide);
-        // rect(this.AX-((bigImgLongSide+15)*0.5), this.AY-((octaRadius*1.05)+bigImgShortSide), bigImgLongSide+15, bigImgShortSide);
-        // centered image closest to the octagon's center. anchored only to Y axis
-        image(im_N_00, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.32), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.32), smallImgShortSide, smallImgLongSide);
-        image(im_N_11, this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(smallImgShortSide/2), this.AY-(octaRadius*0.5), smallImgShortSide, smallImgLongSide);
-        // set anchors to right side (at least I hope it is the right side...)
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(im_N_12, anchorX, anchorY-(smallImgLongSide), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX, anchorY-(smallImgLongSide), smallImgShortSide, smallImgLongSide);
-        image(im_N_13, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
-        image(im_N_14, anchorX-(smallImgShortSide*1.2), anchorY-(smallImgLongSide*3.6), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX-(smallImgShortSide*1.2), anchorY-(smallImgLongSide*3.6), smallImgLongSide, smallImgShortSide);
-        // set anchors to left side, i hope
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(im_N_21, anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*1.15), smallImgLongSide, smallImgLongSide);
-        // rect(anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*1.15), smallImgLongSide, smallImgLongSide);
-        image(im_N_31, anchorX-(smallImgShortSide*0.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
-        image(im_N_41, anchorX-(smallImgShortSide*0.1), anchorY-(smallImgLongSide*3.4), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX-(smallImgShortSide*0.1), anchorY-(smallImgLongSide*3.4), smallImgLongSide, smallImgShortSide);
-        // more centered images anchored to y axis
-        image(im_N_m1, this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.79), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.79), smallImgLongSide, smallImgShortSide);
-        image(im_N_m2, this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.91), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide/2), this.AY-(octaRadius*0.91), smallImgLongSide, smallImgShortSide);
-        break;
-      case "E":
-        image(img_E_Big, this.AX+(octaRadius+(octaSide*0.3)), this.AY-(octaSide*0.16), octaSide*0.25, octaSide*0.3);
-        // rect(this.AX+(octaRadius+(octaSide*0.05)), this.AY-(octaSide*0.16), octaSide*0.25, octaSide*0.3);
-        image(img_E_00, this.AX+(octaRadius*0.2), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX+(octaRadius*0.2), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_E_01, anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
-        // rect(anchorX-(smallImgShortSide*1.8), anchorY-(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide-10);
-        image(img_E_02, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_E_03, anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
-        // rect(anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.8), smallImgShortSide+5, smallImgLongSide+5);
-        image(img_E_04, anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
-        // rect(anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+8, smallImgLongSide+8);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_E_10, anchorX-(smallImgShortSide*1.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*1.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
-        image(img_E_11, anchorX-(smallImgShortSide*0.5), anchorY+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.5), anchorY+(smallImgLongSide*0.3), smallImgShortSide, smallImgLongSide);
-        image(img_E_12, anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
-        // rect(anchorX+(smallImgShortSide*1.2), anchorY-(smallImgLongSide*0.3), smallImgShortSide+5, smallImgLongSide+5);
-        image(img_E_13, anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide),     smallImgShortSide+8, smallImgLongSide+8);
-        // rect(anchorX+(smallImgShortSide*3.2), anchorY-(smallImgLongSide),     smallImgShortSide+8, smallImgLongSide+8);
-        image(img_E_m1, this.AX+(octaRadius-(smallImgShortSide*3.5)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX+(octaRadius-(smallImgShortSide*3.5)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_E_m2, this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX+(octaRadius-(smallImgShortSide*2)), this.AY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        break;
-      case "S":
-        image(img_S_Big, this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.05), bigImgLongSide, bigImgShortSide);
-        // rect(this.AX-(bigImgLongSide/2), this.AY+(octaRadius*1.05), bigImgLongSide, bigImgShortSide);
-        image(img_S_00, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.2), smallImgLongSide, smallImgShortSide);
-        image(img_S_11, this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide/2),  this.AY+(octaRadius*0.32), smallImgLongSide, smallImgShortSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_S_01, anchorX,  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX,  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_S_02, anchorX-smallImgShortSide,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-smallImgShortSide,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_S_12, anchorX-(smallImgShortSide*0.9),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.9),  anchorY+(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_S_13, anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX,  anchorY+(smallImgLongSide*2.5), smallImgShortSide, smallImgLongSide);
-        // anchored to the middle... (y axis)
-        image(img_S_m1, this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*4.6), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(smallImgShortSide/2),  this.AY+(smallImgLongSide*4.6), smallImgShortSide, smallImgLongSide);
-        image(img_S_m2, this.AX-(smallImgLongSide/2),  this.AY+(smallImgShortSide*8.5), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide/2),  this.AY+(smallImgShortSide*8.5), smallImgLongSide, smallImgShortSide);
-        break;
-      case "W":
-        image(img_W_Big, this.AX-((octaRadius*1.05)+bigImgShortSide), this.AY-(bigImgLongSide/2), bigImgShortSide, bigImgLongSide);
-        // rect(this.AX-((octaRadius*1.05)+bigImgShortSide), this.AY-(bigImgLongSide/2), bigImgShortSide, bigImgLongSide);
-        image(img_W_00, this.AX-(smallImgLongSide+(octaRadius*0.21))+(smallImgLongSide/2), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide+(octaRadius*0.21))+(smallImgLongSide/2), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
-        image(img_W_11, this.AX-(smallImgShortSide+(octaRadius*0.32))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(smallImgShortSide+(octaRadius*0.32))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
-        image(img_W_22, this.AX-(smallImgShortSide+(octaRadius*0.43))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(smallImgShortSide+(octaRadius*0.43))+(smallImgShortSide*0.4), this.AY-(smallImgLongSide/2), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_W_t0, anchorX-(smallImgLongSide*1.1), anchorY+(smallImgShortSide*0.1), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX-(smallImgLongSide*1.1), anchorY+(smallImgShortSide*0.1), smallImgLongSide, smallImgShortSide);
-        image(img_W_t1, anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_W_t2, anchorX-(smallImgShortSide*4.8), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*4.8), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_W_b0, anchorX-(smallImgLongSide*1.1), anchorY-(smallImgShortSide*1.1), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX-(smallImgLongSide*1.1), anchorY-(smallImgShortSide*1.1), smallImgLongSide, smallImgShortSide);
-        image(img_W_b1, anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*3.1), anchorY-(smallImgLongSide*0.5), smallImgShortSide, smallImgLongSide);
-        image(img_W_b2, anchorX-(smallImgShortSide*4.8), anchorY, smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*4.8), anchorY, smallImgShortSide, smallImgLongSide);
-        // wtf happenned here? why is there an extra line????
-        // 'was' there an extra line... oh well
-        image(img_W_m0, this.AX-(smallImgLongSide*5.05), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
-        // rect(this.AX-(smallImgLongSide*5.05), this.AY-(smallImgShortSide/2), smallImgLongSide, smallImgShortSide);
-        image(img_W_m1, this.AX-(smallImgLongSide*6.5), this.AY-(smallImgLongSide/2), smallImgLongSide, smallImgLongSide);
-        // rect(this.AX-(smallImgLongSide*6.5), this.AY-(smallImgLongSide/2), smallImgLongSide, smallImgLongSide);
-        image(img_W_mt, this.AX-(octaRadius*0.98), this.AY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(octaRadius*0.98), this.AY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_W_mb, this.AX-(octaRadius*0.98), this.AY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(octaRadius*0.98), this.AY+(smallImgLongSide*0.2), smallImgShortSide, smallImgLongSide);
-        break;
-      case "NE":
-        image(img_NE_Big, this.AX+(octaRadius*0.72), this.AY-(octaRadius*0.72)-bigImgLongSide, bigImgShortSide, bigImgLongSide);
-        // rect(this.AX+(octaRadius*0.72), this.AY-(octaRadius*0.72)-bigImgLongSide, bigImgShortSide, bigImgLongSide);
-        anchorX = this.AX+(octaRadius*0.2);
-        anchorY = this.AY-(octaRadius*0.2);
-        image(img_NE_00, anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide/2), anchorY-(smallImgShortSide/2), smallImgShortSide, smallImgLongSide);
-        anchorX = this.AX+(octaRadius*0.3);
-        anchorY = this.AY-(octaRadius*0.3);
-        image(img_NE_01, anchorX-(smallImgShortSide*0.35), anchorY+(smallImgShortSide*0.05), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.35), anchorY+(smallImgShortSide*0.05), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_NE_02, anchorX-(smallImgLongSide*0.9), anchorY-(smallImgShortSide*1.2), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX-(smallImgLongSide*0.9), anchorY-(smallImgShortSide*1.2), smallImgLongSide, smallImgShortSide);
-        image(img_NE_03, anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.7), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.7), smallImgShortSide, smallImgLongSide);
-        image(img_NE_04, anchorX+(smallImgLongSide*2.1), anchorY-(smallImgShortSide*2.8), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX+(smallImgLongSide*2.1), anchorY-(smallImgShortSide*2.8), smallImgLongSide, smallImgShortSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_NE_10, anchorX+(smallImgShortSide*0.2), anchorY+(smallImgLongSide*0.25), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*0.2), anchorY+(smallImgLongSide*0.25), smallImgShortSide, smallImgLongSide);
-        image(img_NE_11, anchorX+(smallImgShortSide*0.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*0.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        image(img_NE_12, anchorX+(smallImgShortSide*1.8), anchorY-(smallImgLongSide*2.9), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*1.8), anchorY-(smallImgLongSide*2.9), smallImgShortSide, smallImgLongSide);
-        anchorX = this.AX+(octaRadius*0.42);
-        anchorY = this.AY-(octaRadius*0.44);
-        image(img_NE_m0, anchorX-(smallImgShortSide*0.5), anchorY-(smallImgShortSide*0.5), smallImgLongSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.5), anchorY-(smallImgShortSide*0.5), smallImgLongSide, smallImgLongSide);
-        anchorX = this.AX+(octaRadius*0.6);
-        anchorY = this.AY-(octaRadius*0.6);
-        image(img_NE_m01, anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*0.9), smallImgLongSide, smallImgLongSide);
-        // rect(anchorX-(smallImgLongSide), anchorY-(smallImgLongSide*0.9), smallImgLongSide, smallImgLongSide);
-        image(img_NE_m10, anchorX+(smallImgLongSide*0.2), anchorY+(smallImgLongSide*0.1), smallImgLongSide, smallImgLongSide);
-        // rect(anchorX+(smallImgLongSide*0.2), anchorY+(smallImgLongSide*0.1), smallImgLongSide, smallImgLongSide);
-        break;
-      case "NW":
-        image(img_NW_Big, this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY-(octaRadius*0.72)-bigImgShortSide, bigImgLongSide, bigImgShortSide);
-        // rect(this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY-(octaRadius*0.72)-bigImgShortSide, bigImgLongSide, bigImgShortSide);
-        image(img_NW_00, this.AX-(octaRadius*0.2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgShortSide);
-        // rect(this.AX-(octaRadius*0.2), this.AY-(octaRadius*0.2), smallImgShortSide, smallImgShortSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_NW_01, anchorX-(smallImgShortSide*0.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*0.8), anchorY+(smallImgLongSide*0.6), smallImgShortSide, smallImgLongSide)
-        image(img_NW_02, anchorX-(smallImgShortSide*1.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*1.9), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        image(img_NW_03, anchorX-(smallImgShortSide*2.9), anchorY-(smallImgShortSide*3.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide*2.9), anchorY-(smallImgShortSide*3.5), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_NW_10, anchorX+(smallImgShortSide*0.2), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*0.2), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        image(img_NW_20, anchorX-(smallImgLongSide*2.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgLongSide*2.4), anchorY-(smallImgLongSide*2.3), smallImgShortSide, smallImgLongSide);
-        image(img_NW_m1, this.AX-(octaRadius*0.46), this.AY-(octaRadius*0.49), smallImgLongSide, smallImgLongSide);
-        // rect(this.AX-(octaRadius*0.46), this.AY-(octaRadius*0.49), smallImgLongSide, smallImgLongSide);
-        image(img_NW_m2, this.AX-(octaRadius*0.65), this.AY-(octaRadius*0.65), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(octaRadius*0.65), this.AY-(octaRadius*0.65), smallImgShortSide, smallImgLongSide);
-        break;
-      case "SE":
-        image(img_SE_Big, this.AX+(octaRadius*0.72), this.AY+(octaRadius*0.72), bigImgShortSide, bigImgLongSide);
-        // rect(this.AX+(octaRadius*0.72), this.AY+(octaRadius*0.72), bigImgShortSide, bigImgLongSide);
-        image(img_SE_00, this.AX+(octaRadius*0.1), this.AY+(octaRadius*0.09), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX+(octaRadius*0.1), this.AY+(octaRadius*0.09), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_SE_01, anchorX-(smallImgLongSide*0.5), anchorY+(smallImgLongSide*0.4), smallImgLongSide, smallImgLongSide);
-        // rect(anchorX-(smallImgLongSide*0.5), anchorY+(smallImgLongSide*0.4), smallImgLongSide, smallImgLongSide);
-        image(img_SE_02, anchorX+(smallImgLongSide*1.5), anchorY+(smallImgShortSide*1.8), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX+(smallImgLongSide*1.5), anchorY+(smallImgShortSide*1.8), smallImgLongSide, smallImgShortSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_SE_10, anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*0.5), anchorY-(smallImgLongSide*1.1), smallImgShortSide, smallImgLongSide);
-        image(img_SE_11, anchorX+(smallImgShortSide*1.6), anchorY+(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX+(smallImgShortSide*1.6), anchorY+(smallImgLongSide*1.4), smallImgShortSide, smallImgLongSide);
-        break;
-      case "SW":
-        image(img_SW_Big, this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY+(octaRadius*0.72), bigImgLongSide, bigImgShortSide);
-        // rect(this.AX-(octaRadius*0.72)-bigImgLongSide, this.AY+(octaRadius*0.72), bigImgLongSide, bigImgShortSide);
-        image(img_SW_00, this.AX-(octaRadius*0.12)-smallImgShortSide, this.AY+(octaRadius*0.12), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(octaRadius*0.12)-smallImgShortSide, this.AY+(octaRadius*0.12), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.BX)/2;
-        anchorY = (this.AY+this.BY)/2;
-        image(img_SW_01, anchorX, anchorY+(smallImgShortSide*0.3), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX, anchorY+(smallImgShortSide*0.3), smallImgShortSide, smallImgLongSide);
-        image(img_SW_02, anchorX-(smallImgLongSide*1.8), anchorY+(smallImgShortSide*1.5), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgLongSide*1.8), anchorY+(smallImgShortSide*1.5), smallImgShortSide, smallImgLongSide);
-        anchorX = (this.AX+this.CX)/2;
-        anchorY = (this.AY+this.CY)/2;
-        image(img_SW_10, anchorX-(smallImgShortSide+1.2), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        // rect(anchorX-(smallImgShortSide+1.2), anchorY-(smallImgLongSide*1.2), smallImgShortSide, smallImgLongSide);
-        image(img_SW_11, anchorX-(smallImgLongSide*2.2), anchorY+(smallImgShortSide*1.6), smallImgLongSide, smallImgShortSide);
-        // rect(anchorX-(smallImgLongSide*2.2), anchorY+(smallImgShortSide*1.6), smallImgLongSide, smallImgShortSide);
-        image(img_SW_m0, this.AX-(octaRadius*0.45)-smallImgShortSide, this.AY+(octaRadius*0.45), smallImgShortSide, smallImgLongSide);
-        // rect(this.AX-(octaRadius*0.45)-smallImgShortSide, this.AY+(octaRadius*0.45), smallImgShortSide, smallImgLongSide);
-        break;
-      default:
-        console.log("broken image rendering in 'drawBoundImgs'");
-    }
-    // if (this.growing) {
-      // this.boundIMGs.forEach((img) => {
-        // img.resize(img.width*2, img.height*2);
-      // });
-    // }
-  }
-}
-
-
-
-// ----------------- Create Octagon -----------------------------------
-
-class Octagon {
-  constructor(cX, cY, rad, a) {
-    this.cX = cX;
-    this.cY = cY;
-    this.rad = rad;
-    this.A = a/2;
-
-    this.trig_N = undefined;
-    this.trig_E = undefined;
-    this.trig_S = undefined;
-    this.trig_W = undefined;
-    this.trig_NE = undefined;
-    this.trig_NW = undefined;
-    this.trig_SE = undefined;
-    this.trig_SW = undefined;
-
-    this.trigs = this.makeOctagon(cX, cY, rad, a/2);
-  }
-
-  linkBoundImgs(){
-    this.trigs.forEach((trig) => {
-      switch (trig.heading) {
-        case "N":
-          trig.boundIMGs.push(img_N_Big);
-          trig.boundIMGs.push(im_N_00);
-          trig.boundIMGs.push(im_N_11);
-          trig.boundIMGs.push(im_N_12);
-          trig.boundIMGs.push(im_N_13);
-          trig.boundIMGs.push(im_N_14);
-          trig.boundIMGs.push(im_N_21);
-          trig.boundIMGs.push(im_N_31);
-          trig.boundIMGs.push(im_N_41);
-          trig.boundIMGs.push(im_N_m1);
-          trig.boundIMGs.push(im_N_m2);
-          break;
-        case "E":
-          trig.boundIMGs.push(img_E_Big);
-          trig.boundIMGs.push(img_E_00);
-          trig.boundIMGs.push(img_E_01);
-          trig.boundIMGs.push(img_E_02);
-          trig.boundIMGs.push(img_E_03);
-          trig.boundIMGs.push(img_E_04);
-          trig.boundIMGs.push(img_E_10);
-          trig.boundIMGs.push(img_E_11);
-          trig.boundIMGs.push(img_E_12);
-          trig.boundIMGs.push(img_E_13);
-          trig.boundIMGs.push(img_E_m1);
-          trig.boundIMGs.push(img_E_m2);
-          break;
-        case "S":
-          trig.boundIMGs.push(img_S_Big);
-          trig.boundIMGs.push(img_S_00);
-          trig.boundIMGs.push(img_S_11);
-          trig.boundIMGs.push(img_S_01);
-          trig.boundIMGs.push(img_S_02);
-          trig.boundIMGs.push(img_S_12);
-          trig.boundIMGs.push(img_S_13);
-          trig.boundIMGs.push(img_S_m1);
-          trig.boundIMGs.push(img_S_m2);
-          break;
-        case "W":
-          trig.boundIMGs.push(img_W_Big);
-          trig.boundIMGs.push(img_W_00);
-          trig.boundIMGs.push(img_W_11);
-          trig.boundIMGs.push(img_W_22);
-          trig.boundIMGs.push(img_W_t0);
-          trig.boundIMGs.push(img_W_t1);
-          trig.boundIMGs.push(img_W_t2);
-          trig.boundIMGs.push(img_W_b0);
-          trig.boundIMGs.push(img_W_b1);
-          trig.boundIMGs.push(img_W_b2);
-          trig.boundIMGs.push(img_W_m0);
-          trig.boundIMGs.push(img_W_m1);
-          trig.boundIMGs.push(img_W_mt);
-          trig.boundIMGs.push(img_W_mb);
-          break;
-        case "NE":
-          trig.boundIMGs.push(img_NE_Big);
-          trig.boundIMGs.push(img_NE_Big);
-          trig.boundIMGs.push(img_NE_00);
-          trig.boundIMGs.push(img_NE_01);
-          trig.boundIMGs.push(img_NE_02);
-          trig.boundIMGs.push(img_NE_03);
-          trig.boundIMGs.push(img_NE_04);
-          trig.boundIMGs.push(img_NE_10);
-          trig.boundIMGs.push(img_NE_11);
-          trig.boundIMGs.push(img_NE_12);
-          trig.boundIMGs.push(img_NE_m0);
-          trig.boundIMGs.push(img_NE_m01);
-          trig.boundIMGs.push(img_NE_m10);
-          break;
-        case "NW":
-          trig.boundIMGs.push(img_NW_Big);
-          trig.boundIMGs.push(img_NW_00);
-          trig.boundIMGs.push(img_NW_01);
-          trig.boundIMGs.push(img_NW_02);
-          trig.boundIMGs.push(img_NW_03);
-          trig.boundIMGs.push(img_NW_10);
-          trig.boundIMGs.push(img_NW_20);
-          trig.boundIMGs.push(img_NW_m1);
-          trig.boundIMGs.push(img_NW_m2);
-          break;
-        case "SE":
-          trig.boundIMGs.push(img_SE_Big);
-          trig.boundIMGs.push(img_SE_00);
-          trig.boundIMGs.push(img_SE_01);
-          trig.boundIMGs.push(img_SE_02);
-          trig.boundIMGs.push(img_SE_10);
-          trig.boundIMGs.push(img_SE_11);
-          break;
-        case "SW":
-          trig.boundIMGs.push(img_SW_Big);
-          trig.boundIMGs.push(img_SW_00);
-          trig.boundIMGs.push(img_SW_01);
-          trig.boundIMGs.push(img_SW_02);
-          trig.boundIMGs.push(img_SW_10);
-          trig.boundIMGs.push(img_SW_11);
-          trig.boundIMGs.push(img_SW_m0);
-          break;
-        default:
-          console.log("tried to link images to a triangle that doesn't exist :')'");
-      }
-    });
-  }
-
-  makeOctagon(centerX, centerY, radius, a) {
-    let octaPieces = [];
-    // N
-    this.trig_N = new OctagonPiece("N", centerX, centerY, centerX+a, centerY-radius, centerX-a, centerY-radius);
-    octaPieces.push(this.trig_N);
-    // E
-    this.trig_E = new OctagonPiece("E", centerX, centerY, centerX+radius, centerY-a, centerX+radius, centerY+a);
-    octaPieces.push(this.trig_E);
-    // // S
-    this.trig_S = new OctagonPiece("S", centerX, centerY, centerX+a, centerY+radius, centerX-a, centerY+radius);
-    octaPieces.push(this.trig_S);
-    // // W
-    this.trig_W = new OctagonPiece("W", centerX, centerY, centerX-radius, centerY-a, centerX-radius, centerY+a);
-    octaPieces.push(this.trig_W);
-    // // NE
-    this.trig_NE = new OctagonPiece("NE", centerX, centerY, centerX+radius, centerY-a, centerX+a, centerY-radius);
-    octaPieces.push(this.trig_NE);
-    // // NW
-    this.trig_NW = new OctagonPiece("NW", centerX, centerY, centerX-radius, centerY-a, centerX-a, centerY-radius);
-    octaPieces.push(this.trig_NW);
-    // // SE
-    this.trig_SE = new OctagonPiece("SE", centerX, centerY, centerX+radius, centerY+a, centerX+a, centerY+radius);
-    octaPieces.push(this.trig_SE);
-    // // SW
-    this.trig_SW = new OctagonPiece("SW", centerX, centerY, centerX-radius, centerY+a, centerX-a, centerY+radius);
-    octaPieces.push(this.trig_SW);
-
-    return octaPieces;
-  }
-}
-
-// --------------------------- main P5 functions ----------------------
-
 
 // because all of this is client-side, we can't load everything in a pretty and efficient loop, oh no....
 // ugly ass column of stupid variables required :(
@@ -648,7 +35,7 @@ var img_SE_Big,img_SE_00,img_SE_01,img_SE_02,img_SE_10,img_SE_11;
 var img_SW_Big,img_SW_00,img_SW_01,img_SW_02,img_SW_10,img_SW_11,img_SW_m0;
 var img_W_Big,img_W_00,img_W_11,img_W_22,img_W_t0,img_W_t1,img_W_t2,img_W_b0,img_W_b1,img_W_b2,img_W_m0,img_W_m1,img_W_mt,img_W_mb;
 
-
+/*
 function preload() {
   // loading our damned images... blame the artist for the amazing significant file-names ¬¬
   // Eastern trig imgs
@@ -740,6 +127,7 @@ function preload() {
   img_W_mt = loadImage("imgs/W/AZUL Y ROSA SEGUNDA SESION_AA copia.jpg");
   img_W_mb = loadImage("imgs/W/escultura_1 copia.jpg");
 }
+*/
 
 function setup() {
   // get the p5 canvas into a div the fits with the rest of the page
@@ -752,35 +140,171 @@ function setup() {
   canvasCenterX = width/2;
   canvasCenterY = height/2;
 
-  // octaRadius = 350;
-  // octaSide = 280;
   octaRadius = width/5;
   octaSide = floor(octaRadius * 0.8);
-  // background(52,13,13);
+
+  smallImgLongSide = octaSide * 0.16;
+  smallImgShortSide = octaSide * 0.125;
+  bigImgLongSide = octaSide * 0.35;
+  bigImgShortSide = octaSide * 0.26;
+
+  // mainHugeImageLongSide = octaRadius * 2.5;
+  // mainHugeImageShortSide = octaRadius * 2;
+
+  xTransform = 0;
+  yTransform = 0;
+
   testOctagon = new Octagon(canvasCenterX, canvasCenterY, octaRadius, octaSide);
 
   testOctagon.linkBoundImgs();
 
-  // loadImage('imgs/E/_10A6217.jpg', img => {
-  //   testImg = img;
-  //   image(img, 0, 0);
-  // });
+  enlargedImage = new OctaImage("Mega Image", null, 0,0,1,1);
+}
 
+
+
+
+// --------------------- scene transformations ------------------------
+
+function displayBigImage(bigImage) {
+  let translationModifier = 1.6;
+  xTransform = translationModifier * (activeTrig.AX - ((activeTrig.BX+activeTrig.CX)/2));
+  yTransform = translationModifier * (activeTrig.AY - ((activeTrig.BY+activeTrig.CY)/2));
+
+  enlargedImage = new OctaImage("mega-"+bigImage.id, bigImage.imgage, (width*0.1)-xTransform, (height*0.075)-yTransform, width*0.8, height*0.75);
+  enlargedImage.selected = true;
+}
+
+
+
+// ---------------------  EVENT HANDLERS ------------------------------
+
+function mouseMoved(){
+  // console.log("mX: "+mouseX+" mY: "+mouseY);
+// check triangles for collision with mouse
+  let trig;
+  // last drawn object is foremost in ui, se we check trigs in reverse in order to stop the loop in case trigs overlap...
+  for (var i = testOctagon.trigs.length; i --> 0;) {
+    trig = testOctagon.trigs[i];
+    if (trig.isMouseInMe()) {
+      // we are in a triangle, so we put it at the en of our list
+      testOctagon.trigs.push(testOctagon.trigs.splice(testOctagon.trigs.indexOf(trig), 1)[0]);
+      trig.growing = true;
+      // set global ref to the trig we have the mouse in
+      activeTrig = trig;
+      // check for collision in images within that triangle
+      for (var i = trig.boundIMGs.length; i --> 0;) {
+        let img = trig.boundIMGs[i];
+        if (img.isMouseInMe()) {
+          // same thing, put that image at the end of its array
+          trig.boundIMGs.push(trig.boundIMGs.splice(trig.boundIMGs.indexOf(img), 1)[0]);
+          img.hovered = true;
+          break;
+        } else {
+          img.hovered = false;
+        }
+      }
+      break;
+    } else {
+      trig.growing = false;
+      trig.boundIMGs.forEach((img) => {
+        img.hovered = false;
+        img.selected = false;
+      });
+    }
+  }
+  bigImgsList.forEach((bigIMG) => {
+    if (bigIMG.isMouseInMe()) {
+      bigIMG.hovered = true;
+    } else {
+      bigIMG.hovered = false;
+    }
+  });
+}
+
+function mousePressed(){
+  // check if we clicked anywhere inside the octagon so we can reset transform in case we didn't
+  let shouldReset = true;
+  for (var i = 0; i < testOctagon.trigs.length; i++) {
+    let trig = testOctagon.trigs[i];
+    if (trig.isMouseInMe()) {
+      shouldReset = false;
+    }
+  }
+  if (shouldReset) {
+    console.log("reset transform");
+    xTransform = 0;
+    yTransform = 0;
+    enlargedImage = null;
+  }
+  try {
+    activeTrig.boundIMGs.forEach((img) => {
+      if (img.hovered) {
+        // console.log("mouse clicked on image: "+img.id);
+        img.selected = true;
+        displayBigImage(img);
+      } else {
+        img.selected = false;
+      }
+    });
+  } catch (e) {
+    console.log("problems with active trig...");
+    console.log(e);
+  }
+  return false;
+}
+
+function keyPressed(){
+  // if(keyCode === 32){ // 32 is p5 keycode for space
+  //   xTransform = 0;
+  //   yTransform = 0;
+  //   console.log("reset scene transform");
+  //   return false;
+  // }
+  if (key === "w") {
+    yTransform -= 100;
+  }
+  if (key === "s") {
+    yTransform += 100;
+  }
+  if (key === "a") {
+    xTransform -= 100;
+  }
+  if (key === "d") {
+    xTransform += 100;
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  canvasCenterX = width/2;
+  canvasCenterY = height/2;
+
+  octaRadius = width/5;
+  octaSide = floor(octaRadius * 0.8);
+
+  smallImgLongSide = octaSide * 0.16;
+  smallImgShortSide = octaSide * 0.125;
+  bigImgLongSide = octaSide * 0.35;
+  bigImgShortSide = octaSide * 0.26;
+
+  // mainHugeImageLongSide = octaRadius * 2.5;
+  // mainHugeImageShortSide = octaRadius * 2;
+
+  testOctagon = new Octagon(canvasCenterX, canvasCenterY, octaRadius, octaSide);
+  testOctagon.linkBoundImgs();
 }
 
 
 function draw() {
   background(13,13,13);
+  translate(xTransform, yTransform);
   // image(img_E_Big,0,0,200,400);
-
-
-  // testTrig.drawMe();
-  testOctagon.trigs.forEach((trig) => {
-    // console.log(trig.OGverts);
-    // console.log(trig.currentVerts);
+  for (var i = 0; i < testOctagon.trigs.length; i++) {
+    let trig = testOctagon.trigs[i];
+    // console.log("drawing "+trig.heading);
     if (trig.growing) {
       // console.log("trig should be growing");
-      // console.log(trig.bigAsCanBe());
       if (!trig.bigAsCanBe()) {
         // console.log("not at max size");
         trig.grow();
@@ -794,50 +318,8 @@ function draw() {
     }
     trig.updateVerts();
     trig.drawMe();
-    trig.drawBoundImgs();
-  });
-  // temp visualize center point in canvas
-  // fill(255);
-  // noStroke();
-  // ellipse(canvasCenterX, canvasCenterY, 5,5);
-}
-
-// ---------------------  EVENT HANDLERS ------------------------------
-
-function mouseMoved(){
-  // test octagon collision
-  // check 'some' function to kill the loop and stop growing trigs in the background
-  testOctagon.trigs.forEach((trig) => {
-    if (trig.isMouseInMe()) {
-      // we need this triangle at the end of the array so it gets drawn in front of all others...
-      testOctagon.trigs.push(testOctagon.trigs.splice(testOctagon.trigs.indexOf(trig), 1)[0])
-      trig.growing = true;
-    } else {
-      trig.growing = false;
-    }
-  });
-}
-
-
-function mousePressed(){
-  // fill(13,91,13);
-  // ellipse(mouseX, mouseY, 13,13);
-}
-
-function keyPressed(){
-  // console.log("key: "+ key);
-  // console.log("keyCode: "+ keyCode);
-  if(keyCode === 32){ // 32 is p5 keycode for space
-    clear();
-    return false;
   }
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  canvasCenterX = width/2;
-  canvasCenterY = height/2;
-  octaRadius = width/5;
-  octaSide = floor(octaRadius * 0.8);
-  testOctagon = new Octagon(canvasCenterX, canvasCenterY, octaRadius, octaSide);
+  if (enlargedImage != null) {
+    enlargedImage.drawMe();
+  }
 }
