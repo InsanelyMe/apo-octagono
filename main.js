@@ -35,7 +35,7 @@ var img_SE_Big,img_SE_00,img_SE_01,img_SE_02,img_SE_10,img_SE_11;
 var img_SW_Big,img_SW_00,img_SW_01,img_SW_02,img_SW_10,img_SW_11,img_SW_m0;
 var img_W_Big,img_W_00,img_W_11,img_W_22,img_W_t0,img_W_t1,img_W_t2,img_W_b0,img_W_b1,img_W_b2,img_W_m0,img_W_m1,img_W_mt,img_W_mb;
 
-/*
+
 function preload() {
   // loading our damned images... blame the artist for the amazing significant file-names ¬¬
   // Eastern trig imgs
@@ -127,7 +127,7 @@ function preload() {
   img_W_mt = loadImage("imgs/W/AZUL Y ROSA SEGUNDA SESION_AA copia.jpg");
   img_W_mb = loadImage("imgs/W/escultura_1 copia.jpg");
 }
-*/
+
 
 function setup() {
   // get the p5 canvas into a div the fits with the rest of the page
