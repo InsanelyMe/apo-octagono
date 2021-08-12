@@ -18,6 +18,8 @@ class OctaImage {
 
     this.selected = false;
     this.hovered = false;
+
+    this.isPortrait = this.amIPortrait();
   }
 
   getCenter(){
@@ -48,6 +50,14 @@ class OctaImage {
     if(distY < 0) {
       this.yPos += movey;
       // this.yPos -= movey;
+    }
+  }
+
+  amIPortrait(){
+    if (this.xSize < this.ySize) {
+      return true;
+    } else {
+      return false;
     }
   }
 

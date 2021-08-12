@@ -35,7 +35,7 @@ var img_SE_Big,img_SE_00,img_SE_01,img_SE_02,img_SE_10,img_SE_11;
 var img_SW_Big,img_SW_00,img_SW_01,img_SW_02,img_SW_10,img_SW_11,img_SW_m0;
 var img_W_Big,img_W_00,img_W_11,img_W_22,img_W_t0,img_W_t1,img_W_t2,img_W_b0,img_W_b1,img_W_b2,img_W_m0,img_W_m1,img_W_mt,img_W_mb;
 
-
+//
 function preload() {
   // loading our damned images... blame the artist for the amazing significant file-names ¬¬
   // Eastern trig imgs
@@ -171,7 +171,13 @@ function displayBigImage(bigImage) {
   xTransform = translationModifier * (activeTrig.AX - ((activeTrig.BX+activeTrig.CX)/2));
   yTransform = translationModifier * (activeTrig.AY - ((activeTrig.BY+activeTrig.CY)/2));
 
-  enlargedImage = new OctaImage("mega-"+bigImage.id, bigImage.image, (width*0.1)-xTransform, (height*0.075)-yTransform, width*0.8, height*0.75);
+
+
+  if (bigIMG.isPortrait) {
+    enlargedImage = new OctaImage("mega-"+bigImage.id, bigImage.image, (width*0.1)-xTransform, (height*0.075)-yTransform, width*0.55, height*0.9);
+  } else {
+    enlargedImage = new OctaImage("mega-"+bigImage.id, bigImage.image, (width*0.1)-xTransform, (height*0.075)-yTransform, width*0.8, height*0.75);
+  }
   // enlargedImage.selected = true;
 }
 
